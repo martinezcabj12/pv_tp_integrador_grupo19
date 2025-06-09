@@ -6,7 +6,6 @@ import {
   useDisclosure,
   Stack,
   Link as ChakraLink,
-  Text,
   Image,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
@@ -45,7 +44,13 @@ const Navbar = () => {
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Image height="100px" src="/logo.png" alt="Logo" />
+        <Image
+          height="140px"
+          src="/logo.png"
+          alt="Logo"
+          px={5}
+          filter="drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.45))"
+        />
 
         <IconButton
           size={"md"}
