@@ -62,7 +62,11 @@ const Navbar = () => {
           _hover={{ bg: "teal.600" }}
         />
 
-        <HStack spacing={4} display={{ base: "none", md: "flex" }}>
+        <HStack
+          spacing={4}
+          fontFamily={"Onyra"}
+          display={{ base: "none", md: "flex" }}
+        >
           {links.map((link) => (
             <NavLink key={link.name} path={link.path}>
               {link.name}
@@ -72,7 +76,12 @@ const Navbar = () => {
       </Flex>
 
       {isOpen ? (
-        <Box pb={4} display={{ md: "none" }}>
+        <Box
+          pb={4}
+          fontFamily={"Onyra"}
+          letterSpacing={2}
+          display={{ md: "none" }}
+        >
           <Stack as={"nav"} spacing={2}>
             {links.map((link) => (
               <NavLink key={link.name} path={link.path}>
