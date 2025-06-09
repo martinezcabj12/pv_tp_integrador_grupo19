@@ -45,10 +45,10 @@ const Navbar = () => {
         justifyContent={"space-between"}
       >
         <Image
-          height="140px"
+          height="50px"
           src="/logo.png"
           alt="Logo"
-          px={5}
+          pr={8}
           filter="drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.45))"
         />
 
