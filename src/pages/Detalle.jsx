@@ -1,14 +1,13 @@
 import { useContext } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ProductosContext } from "../context/ProductosContext";
 import ProductoDetalle from "../components/ProductoDetalle";
 import { Box, Button } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+
 const Detalle = () => {
   const { id } = useParams();
-  const { productos } = useContext(ProductosContext);
-  const producto = productos.find((prod) => {
-    return prod.id === Number(id);
-  });
+  const productos = useSelector((state) => state.products.items);
+  const producto = productos.find((prod) => prod.id === Number(id));
 
   if (!producto) {
     return (
@@ -23,7 +22,6 @@ const Detalle = () => {
       <ProductoDetalle producto={producto} />
       <Box>
         {" "}
-        textAlign="center" mt={4}
         <Button as={Link} to="/" colorScheme="teal" mt={4}>
           Volver al Store
         </Button>
@@ -33,4 +31,3 @@ const Detalle = () => {
 };
 
 export default Detalle;
-

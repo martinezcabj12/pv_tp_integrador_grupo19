@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleFavorite } from '../../../features/products/productsSlice';
 import RatingStars from '../../../components/RatingStars';
 import FavButton from '../../../components/FavButton';
+import { Link } from 'react-router-dom';
 
 const ProductCard = ({ producto }) => {
   const dispatch = useDispatch();
@@ -52,7 +53,14 @@ const ProductCard = ({ producto }) => {
       </CardBody>
       <CardFooter gap="2" >
         <Button variant="solid" width="100%">Comprar</Button>
-        <Button variant="solid" width="100%">Ver Detalles</Button>
+        <Button
+          as={Link}
+          to={`/detalle/${producto.id}`}
+          variant="solid"
+          width="100%"
+        >
+          Ver Detalles
+        </Button>
       </CardFooter>
     </Card>
   );

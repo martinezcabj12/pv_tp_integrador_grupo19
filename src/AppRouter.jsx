@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Home from "./views/Home";
 import Footer from "./components/Footer";
 import Favoritos from "./views/Favoritos";
+import Detalle from "./pages/Detalle";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/favoritos" element={<Favoritos />} />
             <Route path="/formulario" element={<h1>Formulario</h1>} />
+            <Route path="/detalle/:id" element={<Detalle />} />
           </Routes>
         </main>
       </div>
