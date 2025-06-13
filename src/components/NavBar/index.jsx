@@ -37,7 +37,7 @@ const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box bg="blue.500" px={4} color="white" borderRadius={"2rem"}>
+    <Box bg="blue.500" px={4} mt={4} color="white" borderRadius={"2rem"}>
       <Flex
         h={16}
         px={4}
