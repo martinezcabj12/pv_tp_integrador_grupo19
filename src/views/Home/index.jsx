@@ -9,7 +9,9 @@ const Home = () => {
     return (
       <Center minH="60vh">
         <Spinner size="xl" thickness="4px" color="purple.500" speed="0.65s" />
-        <Text ml={4} fontSize="xl">Cargando productos...</Text>
+        <Text ml={4} fontSize="xl">
+          Cargando productos...
+        </Text>
       </Center>
     );
   }
@@ -18,7 +20,9 @@ const Home = () => {
     return (
       <Box minH="100vh" display="flex" flexDirection="column">
         <Center flex="1">
-          <Text fontSize="xl" color="gray.500">No hay productos para mostrar.</Text>
+          <Text fontSize="xl" color="gray.500">
+            No hay productos para mostrar.
+          </Text>
         </Center>
       </Box>
     );
@@ -29,15 +33,12 @@ const Home = () => {
       <SimpleGrid
         columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
         spacing={6}
-        marginLeft={3}
-        mt={4}
+        mx={4}
+        my={7}
       >
-        {items.map((producto) =>
-          <ProductCard
-            key={producto.id}
-            producto={producto}
-          />
-        )}
+        {items.map((producto) => (
+          <ProductCard key={producto.id} producto={producto} />
+        ))}
       </SimpleGrid>
     </>
   );
