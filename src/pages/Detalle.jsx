@@ -1,29 +1,36 @@
-import React, { useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ProductosContext } from '../context/ProductosContext';
-import ProductoDetalle from '../components/ProductoDetalle';
-import { Box, Button } from '@chakra-ui/react';
+import { useContext } from "react";
+import { useParams, Link } from "react-router-dom";
+import { ProductosContext } from "../context/ProductosContext";
+import ProductoDetalle from "../components/ProductoDetalle";
+import { Box, Button } from "@chakra-ui/react";
 const Detalle = () => {
-    // Importamos useParams para obtener el id del producto desde la URL
-    // Importamos useContext para acceder al contexto de productos
- const { id } = useParams(); 
- const { productos } = useContext(ProductosContext);
- const producto = productos.find(prod => prod.id === parseInt(id));
+  const { id } = useParams();
+  const { productos } = useContext(ProductosContext);
+  const producto = productos.find((prod) => {
+    return prod.id === Number(id);
+  });
 
-    if (!producto) {
-        return <Box textAlign="center" mt={10}>Producto no encontrado</Box>;
-    }
-
+  if (!producto) {
     return (
-        <Box>
-            <ProductoDetalle producto={producto} />
-            <Box> textAlign="center" mt={4}
-            <Button as={Link} to="/" colorScheme="teal" mt={4}>
-          Volver al Store
-            </Button>
-        </Box>
-        </Box>
+      <Box textAlign="center" mt={10}>
+        Producto no encontrado
+      </Box>
     );
+  }
+
+  return (
+    <Box>
+      <ProductoDetalle producto={producto} />
+      <Box>
+        {" "}
+        textAlign="center" mt={4}
+        <Button as={Link} to="/" colorScheme="teal" mt={4}>
+          Volver al Store
+        </Button>
+      </Box>
+    </Box>
+  );
 };
 
 export default Detalle;
+
