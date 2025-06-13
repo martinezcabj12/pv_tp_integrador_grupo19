@@ -1,8 +1,19 @@
-import { Button, Card, CardBody, CardFooter, Heading, Image, Text, HStack, Badge, Box } from '@chakra-ui/react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleFavorite } from '../../../features/products/productsSlice';
-import RatingStars from '../../../components/RatingStars';
-import FavButton from '../../../components/FavButton';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Heading,
+  Image,
+  Text,
+  HStack,
+  Badge,
+  Box,
+} from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "../../../features/products/productsSlice";
+import RatingStars from "../../../components/RatingStars";
+import FavButton from "../../../components/FavButton";
 
 const FavCard = ({ favorito }) => {
   const dispatch = useDispatch();
@@ -11,12 +22,12 @@ const FavCard = ({ favorito }) => {
 
   return (
     <Card
-      width="100%"
+      width="50%"
       maxW="100%"
       overflow="hidden"
       display="flex"
       flexDirection="row"
-      alignItems="stretch"
+      alignItems="center"
       position="relative"
       boxShadow="md"
       mb={4}
@@ -27,18 +38,34 @@ const FavCard = ({ favorito }) => {
         maxW="200px"
         minW="180px"
         objectFit="contain"
-        bg="white" // Cambia el fondo a blanco para que combine mejor con la mayoría de las imágenes
+        bg="white"
         p={4}
       />
-      <Box flex="1" display="flex" flexDirection="column" justifyContent="space-between">
+      <Box
+        flex="1"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+      >
         <CardBody pb={0}>
-          <Heading size="md" minH="48px" mt={3}>{favorito.title}</Heading>
+          <Heading size="md" minH="48px" mt={3}>
+            {favorito.title}
+          </Heading>
           <HStack mt={2} mb={2} alignItems="center">
-            <Badge colorScheme="purple" fontSize="0.9em" px={2} py={0.5} borderRadius="md">
+            <Badge
+              colorScheme="purple"
+              fontSize="0.9em"
+              px={2}
+              py={0.5}
+              borderRadius="md"
+            >
               {favorito.category}
             </Badge>
-            {favorito.rating && favorito.rating.rate && (
-              <RatingStars rate={favorito.rating.rate} count={favorito.rating.count} />
+            {favorito.rating?.rate && (
+              <RatingStars
+                rate={favorito.rating.rate}
+                count={favorito.rating.count}
+              />
             )}
           </HStack>
           <Text fontSize="2xl" fontWeight="medium" letterSpacing="tight" mt="2">
@@ -46,8 +73,12 @@ const FavCard = ({ favorito }) => {
           </Text>
         </CardBody>
         <CardFooter gap={2} pt={2}>
-          <Button variant="solid" width="100%">Comprar</Button>
-          <Button variant="outline" width="100%">Ver Detalles</Button>
+          <Button variant="solid" width="100%">
+            Comprar
+          </Button>
+          <Button variant="outline" width="100%">
+            Ver Detalles
+          </Button>
         </CardFooter>
       </Box>
       <FavButton
@@ -63,3 +94,4 @@ const FavCard = ({ favorito }) => {
 };
 
 export default FavCard;
+
