@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import FavCard from "./components/FavCard";
+import ProductCard from "../../components/ProductCard";
 import { SimpleGrid, Text, Box } from "@chakra-ui/react";
 
 const Favoritos = () => {
@@ -14,6 +14,9 @@ const Favoritos = () => {
         flexDirection="row"
         justifyContent="center"
         alignItems="center"
+        width="100%"
+        minH="100vh"
+        p={{ base: 2, md: 4 }}
       >
         <Text fontSize="xl" color="gray.500">
           No hay favoritos para mostrar.
@@ -24,21 +27,38 @@ const Favoritos = () => {
 
   return (
     <Box
-      px={2}
-      width="100%"
-      minH="70vh"
       display="flex"
-      flexDirection="column"
-      justifyContent="flex-start"
+      justifyContent="center"
+      width="100%"
+      minH="100vh"
+      p={{ base: 2, md: 4 }}
     >
-      <SimpleGrid gap={6} marginLeft={3} mt={4}>
-        {favoritos.map((favorito) => (
-          <FavCard key={favorito.id} favorito={favorito} />
-        ))}
-      </SimpleGrid>
+      <Box maxW="1200px" width="100%">
+        <Text
+          fontSize={{ base: "2xl", md: "3xl" }}
+          fontWeight="bold"
+          textAlign="left"
+          mb={6}
+          pl={{ base: 2, md: 4 }}
+          bgGradient="linear(to-r, blue.500, purple.500)"
+          bgClip="text"
+        >
+          Mis Favoritos ({favoritos.length})
+        </Text>
+        <SimpleGrid
+          columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
+          spacing={{ base: 4, md: 6 }}
+          width="100%"
+          justifyItems="center"
+          alignItems="stretch"
+        >
+          {favoritos.map((favorito) => (
+            <ProductCard key={favorito.id} items={favorito} />
+          ))}
+        </SimpleGrid>
+      </Box>
     </Box>
   );
 };
 
 export default Favoritos;
-
