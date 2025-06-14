@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import ProductoDetalle from "../components/ProductoDetalle";
 import { Box, Button } from "@chakra-ui/react";
@@ -18,11 +17,11 @@ const Detalle = () => {
   }
 
   return (
-    <Box>
+    <Box mt={3}>
       <ProductoDetalle producto={producto} />
       <Box>
         {" "}
-        <Button as={Link} to="/" colorScheme="teal" mt={4}>
+        <Button as={Link} to="/" colorScheme="teal" my={4}>
           Volver al Store
         </Button>
       </Box>
