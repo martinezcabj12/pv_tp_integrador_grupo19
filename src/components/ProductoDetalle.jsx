@@ -33,7 +33,7 @@ const ProductoDetalle = ({ producto }) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.products.favorites);
   const isFavorite = favorites.includes(producto.id);
-  const { showFavoriteAddedToast, showFavoriteRemovedToast } = useToastManager();
+  const { showFavoriteToast } = useToastManager();
 
   // Simular stock basado en el rating count
   const getStockInfo = (ratingCount) => {
@@ -45,9 +45,9 @@ const ProductoDetalle = ({ producto }) => {
 
   const handleFavoriteToggle = () => {
     if (isFavorite) {
-      showFavoriteRemovedToast(producto.title, producto.id);
+      showFavoriteToast(producto.title, false);
     } else {
-      showFavoriteAddedToast(producto.title);
+      showFavoriteToast(producto.title, true);
     }
     dispatch(toggleFavorite(producto.id));
   };
