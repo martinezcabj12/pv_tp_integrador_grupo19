@@ -1,9 +1,10 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ProductoDetalle from "../components/ProductoDetalle";
 import { Box, Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
 const Detalle = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const productos = useSelector((state) => state.products.items);
   const producto = productos.find((prod) => prod.id === Number(id));
@@ -21,9 +22,7 @@ const Detalle = () => {
       <ProductoDetalle producto={producto} />
       <Box>
         {" "}
-        <Button as={Link} to="/" colorScheme="teal" my={4}>
-          Volver al Store
-        </Button>
+        <Button onClick={() => navigate(-1)}>Volver al store</Button>
       </Box>
     </Box>
   );

@@ -4,6 +4,7 @@ import Home from "./views/Home";
 import Footer from "./components/Footer";
 import Favoritos from "./views/Favoritos";
 import Detalle from "./pages/Detalle";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       </div>
       <div className="main">
         <main>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/favoritos" element={<Favoritos />} />

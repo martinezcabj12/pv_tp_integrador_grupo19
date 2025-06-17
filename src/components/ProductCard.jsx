@@ -1,23 +1,23 @@
-import { 
-  Button, 
-  Card, 
-  CardBody, 
-  CardFooter, 
-  Heading, 
-  Image, 
-  Text, 
-  Tooltip, 
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Heading,
+  Image,
+  Text,
+  Tooltip,
   Badge,
   keyframes,
-  Box
-} from '@chakra-ui/react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleFavorite } from '../features/products/productsSlice';
-import { useToastManager } from '../hooks/useToastManager';
-import RatingStars from './RatingStars';
-import FavButton from './FavButton';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+  Box,
+} from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "../features/products/productsSlice";
+import { useToastManager } from "../hooks/useToastManager";
+import RatingStars from "./RatingStars";
+import FavButton from "./FavButton";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 // Animación para el corazón cuando se marca como favorito
 const heartPulse = keyframes`
@@ -27,6 +27,7 @@ const heartPulse = keyframes`
 `;
 
 const ProductCard = ({ items }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { showFavoriteToast } = useToastManager();
   const favorites = useSelector((state) => state.products.favorites);
@@ -36,19 +37,19 @@ const ProductCard = ({ items }) => {
   // Función mejorada para manejar favoritos con animación y sonido
   const handleFavoriteClick = () => {
     const wasAlreadyFavorite = isFavorite;
-    
+
     // Activar animación
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 600);
-    
+
     // Simular sonido con vibración en dispositivos móviles
     if (navigator.vibrate) {
       navigator.vibrate(wasAlreadyFavorite ? [50] : [100, 50, 100]);
     }
-    
+
     // Actualizar el estado de Redux
     dispatch(toggleFavorite(items.id));
-    
+
     // Mostrar toast personalizado
     showFavoriteToast(items.id, !wasAlreadyFavorite);
   };
@@ -56,23 +57,28 @@ const ProductCard = ({ items }) => {
   // Función para determinar el color del badge basado en la categoría
   const getCategoryColor = (category) => {
     const colors = {
-      electronics: 'blue',
-      jewelery: 'purple',
-      "men's clothing": 'green',
-      "women's clothing": 'pink'
+      electronics: "blue",
+      jewelery: "purple",
+      "men's clothing": "green",
+      "women's clothing": "pink",
     };
-    return colors[category] || 'gray';
+    return colors[category] || "gray";
   };
 
   // Función para determinar disponibilidad basada en rating
   const getAvailabilityStatus = (rating) => {
-    if (!rating) return { status: 'Disponible', color: 'green' };
-    
+    if (!rating) return { status: "Disponible", color: "green" };
+
     const count = rating.count;
-    if (count > 200) return { status: 'Muy popular', color: 'blue' };
-    if (count > 100) return { status: 'Popular', color: 'green' };
-    if (count < 50) return { status: 'Pocas unidades', color: 'orange' };
-    return { status: 'Disponible', color: 'green' };
+    if (count > 200) return { status: "Muy popular", color: "blue" };
+    if (count > 100) return { status: "Popular", color: "green" };
+    if (count < 50) return { status: "Pocas unidades", color: "orange" };
+    return { status: "Disponible", color: "green" };
+  };
+
+  const handleVerDetalle = () => {
+    sessionStorage.setItem("storeScroll", window.scrollY);
+    navigate(`/detalle/${items.id}`);
   };
 
   const availability = getAvailabilityStatus(items.rating);
@@ -92,9 +98,9 @@ const ProductCard = ({ items }) => {
       borderRadius="xl"
       transition="all 0.3s ease-in-out"
       _hover={{
-        transform: 'translateY(-4px)',
-        boxShadow: '2xl',
-        borderColor: 'blue.200',
+        transform: "translateY(-4px)",
+        boxShadow: "2xl",
+        borderColor: "blue.200",
       }}
       border="1px solid"
       borderColor="gray.100"
@@ -115,7 +121,7 @@ const ProductCard = ({ items }) => {
           bg="white"
           borderRadius="full"
           boxShadow="md"
-          _hover={{ boxShadow: 'lg' }}
+          _hover={{ boxShadow: "lg" }}
         />
       </Box>
 
@@ -150,21 +156,16 @@ const ProductCard = ({ items }) => {
           maxW="180px"
           objectFit="contain"
           transition="transform 0.3s ease"
-          _hover={{ transform: 'scale(1.05)' }}
+          _hover={{ transform: "scale(1.05)" }}
         />
       </Box>
 
       <CardBody display="flex" flexDirection="column" p={4} flex="1">
         {/* Título con tooltip */}
-        <Tooltip 
-          label={items.title} 
-          hasArrow 
-          placement="top"
-          openDelay={500}
-        >
-          <Heading 
-            size="sm" 
-            isTruncated 
+        <Tooltip label={items.title} hasArrow placement="top" openDelay={500}>
+          <Heading
+            size="sm"
+            isTruncated
             minH="40px"
             mb={2}
             color="gray.800"
@@ -199,9 +200,9 @@ const ProductCard = ({ items }) => {
 
         {/* Precio */}
         <Box mb={4} mt="auto">
-          <Text 
-            fontSize="2xl" 
-            fontWeight="bold" 
+          <Text
+            fontSize="2xl"
+            fontWeight="bold"
             color="green.600"
             lineHeight="1"
           >
@@ -216,33 +217,32 @@ const ProductCard = ({ items }) => {
       {/* Botones de acción */}
       <CardFooter p={4} pt={0}>
         <Box display="flex" gap={2} width="100%">
-          <Button 
-            variant="solid" 
+          <Button
+            variant="solid"
             colorScheme="blue"
             size="sm"
             flex="1"
             fontWeight="medium"
             _hover={{
-              transform: 'translateY(-1px)',
-              boxShadow: 'md'
+              transform: "translateY(-1px)",
+              boxShadow: "md",
             }}
           >
             🛒 Comprar
           </Button>
           <Button
-            as={Link}
-            to={`/detalle/${items.id}`}
+            onClick={handleVerDetalle}
             variant="outline"
             colorScheme="blue"
             size="sm"
             flex="1"
             fontWeight="medium"
             _hover={{
-              transform: 'translateY(-1px)',
-              boxShadow: 'md'
+              transform: "translateY(-1px)",
+              boxShadow: "md",
             }}
           >
-            👁️ Ver más
+            👁 Ver más
           </Button>
         </Box>
       </CardFooter>
@@ -251,3 +251,4 @@ const ProductCard = ({ items }) => {
 };
 
 export default ProductCard;
+

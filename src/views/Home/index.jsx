@@ -1,21 +1,33 @@
-import { 
-  SimpleGrid, 
-  Spinner, 
-  Center, 
-  Text, 
-  Box, 
-  Button, 
-  Alert, 
-  AlertIcon, 
-  AlertTitle, 
+import {
+  Alert,
   AlertDescription,
-  VStack
+  AlertIcon,
+  AlertTitle,
+  Box,
+  Button,
+  Center,
+  SimpleGrid,
+  Spinner,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts, clearError } from "../../features/products/productsSlice";
+import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../../components/ProductCard";
+import {
+  clearError,
+  fetchProducts,
+} from "../../features/products/productsSlice";
+import { useEffect } from "react";
 
 const Home = () => {
+  useEffect(() => {
+    const scroll = sessionStorage.getItem("storeScroll");
+    if (scroll) {
+      window.scrollTo(0, Number(scroll, 10));
+      sessionStorage.removeItem("storeScroll");
+    }
+  }, []);
+
   const { items, loading, error } = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
@@ -27,12 +39,7 @@ const Home = () => {
   if (loading) {
     return (
       <Center minH="90vh" flexDirection="column">
-        <Spinner 
-          size="xl" 
-          thickness="4px" 
-          color="purple.500" 
-          speed="0.65s"
-        />
+        <Spinner size="xl" thickness="4px" color="purple.500" speed="0.65s" />
         <Text mt={4} fontSize="xl" color="gray.600" fontWeight="medium">
           Cargando productos...
         </Text>
@@ -49,12 +56,13 @@ const Home = () => {
             <VStack align="start" spacing={2}>
               <AlertTitle>¡Ups! Algo salió mal</AlertTitle>
               <AlertDescription>
-                No pudimos cargar los productos. Verifica tu conexión e intenta nuevamente.
+                No pudimos cargar los productos. Verifica tu conexión e intenta
+                nuevamente.
               </AlertDescription>
             </VStack>
           </Alert>
-          <Button 
-            colorScheme="blue" 
+          <Button
+            colorScheme="blue"
             onClick={handleRetry}
             size="lg"
             borderRadius="full"
@@ -76,8 +84,8 @@ const Home = () => {
             <Text fontSize="xl" color="gray.500">
               No hay productos para mostrar.
             </Text>
-            <Button 
-              colorScheme="blue" 
+            <Button
+              colorScheme="blue"
               onClick={handleRetry}
               size="lg"
               borderRadius="full"
@@ -110,7 +118,7 @@ const Home = () => {
         >
           Nuestros Productos ({items.length})
         </Text>
-        
+
         <SimpleGrid
           columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
           spacing={{ base: 4, md: 6 }}
@@ -128,3 +136,4 @@ const Home = () => {
 };
 
 export default Home;
+
