@@ -73,7 +73,6 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(createProduct.fulfilled, (state, action) => {
-        console.log("Producto creado:", action.payload);
         state.items.push(action.payload);
         state.loading = false;
         state.error = null;
@@ -112,4 +111,3 @@ export const {
 } = productSlice.actions;
 
 export default productSlice.reducer;
-
