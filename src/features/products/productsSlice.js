@@ -80,6 +80,15 @@ const productSlice = createSlice({
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Error desconocido";
+      })
+      .addCase(updateProductAsync.fulfilled, (state, action) => {
+        const updated = action.payload;
+        state.items = state.items.map(product =>
+          product.id === updated.id ? { ...product, ...updated } : product
+        );
+      })
+      .addCase(updateProductAsync.rejected, (state, action) => {
+        state.error = action.payload || "Error al actualizar el producto";
       });
   },
 });
@@ -101,6 +110,28 @@ export const createProduct = createAsyncThunk(
       return rejectWithValue(error.message);
     }
   },
+);
+
+// Acción asincrona para editar un producto en la API y actualizar el store
+export const updateProductAsync = createAsyncThunk(
+  "products/updateProductAsync",
+  async (updatedProduct, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`https://fakestoreapi.com/products/${updatedProduct.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedProduct),
+      });
+      if (!response.ok) {
+        throw new Error("Error al actualizar el producto");
+      }
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
 );
 
 export const {
