@@ -10,6 +10,7 @@ import {
   Badge,
   keyframes,
   Box,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../features/products/productsSlice";
@@ -18,6 +19,8 @@ import RatingStars from "./RatingStars";
 import FavButton from "./FavButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import ProductEditDrawer from "./ProductEditDrawer";
+import { updateProductAsync } from "../features/products/productsSlice";
 
 // Animación para el corazón cuando se marca como favorito
 const heartPulse = keyframes`
@@ -33,6 +36,13 @@ const ProductCard = ({ items }) => {
   const favorites = useSelector((state) => state.products.favorites);
   const isFavorite = favorites.includes(items.id);
   const [isAnimating, setIsAnimating] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [editData, setEditData] = useState({ ...items });
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleEditOpen = () => setIsEditOpen(true);
+  const handleEditClose = () => setIsEditOpen(false);
 
   // Función mejorada para manejar favoritos con animación y sonido
   const handleFavoriteClick = () => {
@@ -83,6 +93,12 @@ const ProductCard = ({ items }) => {
 
   const availability = getAvailabilityStatus(items.rating);
 
+  const handleEditSave = async (editData) => {
+    setIsSubmitting(true);
+    await dispatch(updateProductAsync({ ...editData, id: items.id }));
+    setIsSubmitting(false);
+    setIsEditOpen(false);
+  };
   return (
     <Card
       maxW="280px"
@@ -223,12 +239,13 @@ const ProductCard = ({ items }) => {
             size="sm"
             flex="1"
             fontWeight="medium"
+            onClick={handleEditOpen}
             _hover={{
               transform: "translateY(-1px)",
               boxShadow: "md",
             }}
           >
-            🛒 Comprar
+            ✏️ Editar
           </Button>
           <Button
             onClick={handleVerDetalle}
@@ -246,6 +263,13 @@ const ProductCard = ({ items }) => {
           </Button>
         </Box>
       </CardFooter>
+      <ProductEditDrawer
+        isOpen={isEditOpen}
+        onClose={handleEditClose}
+        product={items}
+        onSave={handleEditSave}
+        isSubmitting={isSubmitting}
+      />
     </Card>
   );
 };
