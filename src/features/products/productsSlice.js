@@ -7,13 +7,13 @@ export const fetchProducts = createAsyncThunk(
     try {
       const response = await fetch("https://fakestoreapi.com/products");
       if (!response.ok) {
-        throw new Error('Error al cargar los productos');
+        throw new Error("Error al cargar los productos");
       }
       return await response.json();
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 const productSlice = createSlice({
@@ -31,7 +31,7 @@ const productSlice = createSlice({
       const id = action.payload;
       if (state.favorites.includes(id)) {
         // Si está en favoritos, lo removemos y guardamos para undo
-        state.favorites = state.favorites.filter(favId => favId !== id);
+        state.favorites = state.favorites.filter((favId) => favId !== id);
         state.lastRemovedFavorite = id;
       } else {
         // Si no está en favoritos, lo agregamos
@@ -39,10 +39,13 @@ const productSlice = createSlice({
         state.lastRemovedFavorite = null; // Limpiamos el undo
       }
     },
-    
+
     // Nuevo reducer para deshacer la última acción de remover favorito
     undoRemoveFavorite: (state) => {
-      if (state.lastRemovedFavorite && !state.favorites.includes(state.lastRemovedFavorite)) {
+      if (
+        state.lastRemovedFavorite &&
+        !state.favorites.includes(state.lastRemovedFavorite)
+      ) {
         state.favorites.push(state.lastRemovedFavorite);
         state.lastRemovedFavorite = null;
       }
@@ -56,10 +59,10 @@ const productSlice = createSlice({
     // Limpiar errores
     clearError: (state) => {
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
-    builder 
+    builder
       .addCase(fetchProducts.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -69,19 +72,42 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = null;
       })
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+        state.loading = false;
+        state.error = null;
+      })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || 'Error desconocido';
+        state.error = action.payload || "Error desconocido";
       });
   },
 });
 
-// Exportamos las acciones
-export const { 
-  toggleFavorite, 
-  undoRemoveFavorite, 
-  clearUndoHistory, 
-  clearError 
+export const createProduct = createAsyncThunk(
+  "products/createProduct",
+  async (nuevoProducto, { rejectWithValue }) => {
+    try {
+      const response = await fetch("https://fakestoreapi.com/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuevoProducto),
+      });
+      if (!response.ok) {
+        throw new Error("Error al crear el producto");
+      }
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const {
+  toggleFavorite,
+  undoRemoveFavorite,
+  clearUndoHistory,
+  clearError,
 } = productSlice.actions;
 
 export default productSlice.reducer;
