@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Favoritos from "./views/Favoritos";
 import Detalle from "./pages/Detalle";
 import ScrollToTop from "./components/ScrollToTop";
+import FormularioProducto from "./views/Formulario";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/favoritos" element={<Favoritos />} />
-            <Route path="/formulario" element={<h1>Formulario</h1>} />
+            <Route path="/formulario" element={<FormularioProducto />} />
             <Route path="/detalle/:id" element={<Detalle />} />
             {/* Default */}
             <Route path="*" element={<Navigate to={"/"} />} />

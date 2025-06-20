@@ -22,7 +22,9 @@ const Detalle = () => {
       <ProductoDetalle producto={producto} />
       <Box>
         {" "}
-        <Button onClick={() => navigate(-1)}>Volver al store</Button>
+        <Button onClick={() => navigate(-1)} mb={5}>
+          Volver al store
+        </Button>
       </Box>
     </Box>
   );
