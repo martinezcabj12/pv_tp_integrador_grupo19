@@ -89,6 +89,16 @@ const productSlice = createSlice({
       })
       .addCase(updateProductAsync.rejected, (state, action) => {
         state.error = action.payload || "Error al actualizar el producto";
+      })
+      .addCase(deleteProductAsync.fulfilled, (state, action) => {
+        const deletedId = action.payload.id;
+        state.items = state.items.filter(product => product.id !== deletedId);
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteProductAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Error al eliminar el producto";
       });
   },
 });
@@ -126,6 +136,28 @@ export const updateProductAsync = createAsyncThunk(
       });
       if (!response.ok) {
         throw new Error("Error al actualizar el producto");
+      }
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Acción asincrona para eliminar un producto en la API y actualizar el store
+export const deleteProductAsync = createAsyncThunk(
+  "products/deleteProductAsync",
+  async (id, { rejectWithValue }) => {
+    // Si el producto es "local" (id string o mayor a 20), lo eliminamos solo del store
+    if (typeof id === "string" || id > 20) {
+      return { id };
+    }
+    try {
+      const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Error al eliminar el producto");
       }
       return await response.json();
     } catch (error) {

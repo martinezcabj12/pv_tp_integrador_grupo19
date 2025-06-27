@@ -20,7 +20,8 @@ import FavButton from "./FavButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ProductEditDrawer from "./ProductEditDrawer";
-import { updateProductAsync } from "../features/products/productsSlice";
+import { updateProductAsync, deleteProductAsync } from "../features/products/productsSlice";
+import ConfirmDialog from "./ConfirmDialog";
 
 // Animación para el corazón cuando se marca como favorito
 const heartPulse = keyframes`
@@ -32,39 +33,55 @@ const heartPulse = keyframes`
 const ProductCard = ({ items }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { showFavoriteToast } = useToastManager();
+  const { showFavoriteToast, showSuccessToast, showErrorToast } = useToastManager();
   const favorites = useSelector((state) => state.products.favorites);
   const isFavorite = favorites.includes(items.id);
   const [isAnimating, setIsAnimating] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [editData, setEditData] = useState({ ...items });
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
+  // Eliminar producto con confirmación y feedback
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      const resultAction = await dispatch(deleteProductAsync(items.id));
+      if (deleteProductAsync.fulfilled.match(resultAction)) {
+        showSuccessToast(
+          "Producto eliminado",
+          `El producto "${items.title}" fue eliminado correctamente.`
+        );
+      } else {
+        showErrorToast(
+          resultAction.payload || "No se pudo eliminar el producto. Intenta nuevamente."
+        );
+      }
+    } catch (error) {
+      showErrorToast("No se pudo eliminar el producto. Intenta nuevamente.");
+    } finally {
+      setIsDeleting(false);
+      setIsConfirmOpen(false);
+    }
+  };
+
+  // Abrir/cerrar drawer de edición
   const handleEditOpen = () => setIsEditOpen(true);
   const handleEditClose = () => setIsEditOpen(false);
 
-  // Función mejorada para manejar favoritos con animación y sonido
+  // Favoritos con animación y feedback
   const handleFavoriteClick = () => {
     const wasAlreadyFavorite = isFavorite;
-
-    // Activar animación
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 600);
-
-    // Simular sonido con vibración en dispositivos móviles
     if (navigator.vibrate) {
       navigator.vibrate(wasAlreadyFavorite ? [50] : [100, 50, 100]);
     }
-
-    // Actualizar el estado de Redux
     dispatch(toggleFavorite(items.id));
-
-    // Mostrar toast personalizado
     showFavoriteToast(items.id, !wasAlreadyFavorite);
   };
 
-  // Función para determinar el color del badge basado en la categoría
+  // Badge de categoría
   const getCategoryColor = (category) => {
     const colors = {
       electronics: "blue",
@@ -75,10 +92,9 @@ const ProductCard = ({ items }) => {
     return colors[category] || "gray";
   };
 
-  // Función para determinar disponibilidad basada en rating
+  // Disponibilidad
   const getAvailabilityStatus = (rating) => {
     if (!rating) return { status: "Disponible", color: "green" };
-
     const count = rating.count;
     if (count > 200) return { status: "Muy popular", color: "blue" };
     if (count > 100) return { status: "Popular", color: "green" };
@@ -86,6 +102,7 @@ const ProductCard = ({ items }) => {
     return { status: "Disponible", color: "green" };
   };
 
+  // Navegar a detalle
   const handleVerDetalle = () => {
     sessionStorage.setItem("storeScroll", window.scrollY);
     navigate(`/detalle/${items.id}`);
@@ -93,12 +110,14 @@ const ProductCard = ({ items }) => {
 
   const availability = getAvailabilityStatus(items.rating);
 
+  // Guardar edición
   const handleEditSave = async (editData) => {
     setIsSubmitting(true);
     await dispatch(updateProductAsync({ ...editData, id: items.id }));
     setIsSubmitting(false);
     setIsEditOpen(false);
   };
+
   return (
     <Card
       maxW="280px"
@@ -261,8 +280,24 @@ const ProductCard = ({ items }) => {
           >
             👁 Ver más
           </Button>
+          <Button
+            onClick={() => setIsConfirmOpen(true)}
+            variant="outline"
+            colorScheme="red"
+            size="sm"
+            flex="1"
+            fontWeight="medium"
+            _hover={{
+              transform: "translateY(-1px)",
+              boxShadow: "md",
+            }}
+            isLoading={isDeleting}
+          >
+            🗑 Eliminar
+          </Button>
         </Box>
       </CardFooter>
+
       <ProductEditDrawer
         isOpen={isEditOpen}
         onClose={handleEditClose}
@@ -270,8 +305,21 @@ const ProductCard = ({ items }) => {
         onSave={handleEditSave}
         isSubmitting={isSubmitting}
       />
+
+      {/* Confirmación de eliminación reutilizable */}
+      <ConfirmDialog
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={handleDelete}
+        title="¿Eliminar producto?"
+        message={`¿Seguro que deseas eliminar "${items.title}"? Esta acción no se puede deshacer.`}
+        confirmText="Eliminar"
+        confirmColor="red"
+        isLoading={isDeleting}
+      />
     </Card>
   );
+
 };
 
 export default ProductCard;
