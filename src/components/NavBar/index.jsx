@@ -53,14 +53,20 @@ const Navbar = () => {
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Image
-          height="50px"
-          src="/logo.png"
-          alt="Logo"
-          pr={8}
-          filter="drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.45))"
-        />
-
+        <ChakraLink
+          as={RouterLink}
+          to="/"
+          _hover={{ textDecoration: "none" }}
+        >
+          <Image
+            height="50px"
+            src="/logo.png"
+            alt="Logo"
+            pr={8}
+            filter="drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.45))"
+            cursor="pointer"
+          />
+        </ChakraLink>
         <IconButton
           size={"md"}
           icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
