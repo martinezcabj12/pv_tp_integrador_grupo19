@@ -10,25 +10,34 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link as RouterLink } from "react-router-dom";
+// Importá los íconos de react-icons
+import { AiFillHome, AiFillHeart, AiOutlinePlusCircle } from "react-icons/ai";
 
 const links = [
-  { name: "Inicio", path: "/" },
-  { name: "Favoritos", path: "/favoritos" },
-  { name: "Formulario", path: "/Formulario" },
+  { name: "Inicio", path: "/", icon: <AiFillHome /> },
+  { name: "Favoritos", path: "/favoritos", icon: <AiFillHeart /> },
+  {
+    name: "Crear Producto",
+    path: "/formulario",
+    icon: <AiOutlinePlusCircle />,
+  },
 ];
 
-const NavLink = ({ path, children }) => (
+const NavLink = ({ path, children, icon }) => (
   <ChakraLink
     as={RouterLink}
     to={path}
     px={3}
     py={2}
-    gap={5}
+    gap={2}
     mx={5}
     rounded={"md"}
+    display="flex"
+    alignItems="center"
     _hover={{ textDecoration: "none", bg: "black" }}
     _activeLink={{ fontWeight: "bold", color: "teal.300" }}
   >
+    {icon}
     {children}
   </ChakraLink>
 );
@@ -68,7 +77,7 @@ const Navbar = () => {
           display={{ base: "none", md: "flex" }}
         >
           {links.map((link) => (
-            <NavLink key={link.name} path={link.path}>
+            <NavLink key={link.name} path={link.path} icon={link.icon}>
               {link.name}
             </NavLink>
           ))}
@@ -84,7 +93,7 @@ const Navbar = () => {
         >
           <Stack as={"nav"} spacing={2}>
             {links.map((link) => (
-              <NavLink key={link.name} path={link.path}>
+              <NavLink key={link.name} path={link.path} icon={link.icon}>
                 {link.name}
               </NavLink>
             ))}
