@@ -17,17 +17,23 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  Textarea
+  Textarea,
 } from "@chakra-ui/react";
 
-const ProductEditDrawer = ({ isOpen, onClose, product, onSave, isSubmitting }) => {
+const ProductEditDrawer = ({
+  isOpen,
+  onClose,
+  product,
+  onSave,
+  isSubmitting,
+}) => {
   const [editData, setEditData] = useState(product || {});
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const cancelRef = React.useRef();
 
   React.useEffect(() => {
     if (isOpen) setEditData(product || {});
-  }, [product,isOpen]);
+  }, [product, isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,15 +57,47 @@ const ProductEditDrawer = ({ isOpen, onClose, product, onSave, isSubmitting }) =
         <DrawerContent display="flex" flexDirection="column" height="100%">
           <DrawerCloseButton />
           <DrawerHeader>Editar producto</DrawerHeader>
-          <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column", height: "100%" }}
+          >
             <DrawerBody flex="1">
               <FormControl mb={3}>
                 <FormLabel>Título</FormLabel>
-                <Input name="title" value={editData.title || ""} onChange={handleChange} required />
+                <Input
+                  name="title"
+                  value={editData.title || ""}
+                  onChange={handleChange}
+                  required
+                />
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Categoria</FormLabel>
+                <Input
+                  name="category"
+                  value={editData.category || ""}
+                  onChange={handleChange}
+                  required
+                />
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Url</FormLabel>
+                <Input
+                  name="url"
+                  value={editData.image || ""}
+                  onChange={handleChange}
+                  required
+                />
               </FormControl>
               <FormControl mb={3}>
                 <FormLabel>Precio</FormLabel>
-                <Input name="price" type="number" value={editData.price || ""} onChange={handleChange} required />
+                <Input
+                  name="price"
+                  type="number"
+                  value={editData.price || ""}
+                  onChange={handleChange}
+                  required
+                />
               </FormControl>
               <FormControl mb={3}>
                 <FormLabel>Descripción</FormLabel>
@@ -77,7 +115,12 @@ const ProductEditDrawer = ({ isOpen, onClose, product, onSave, isSubmitting }) =
               {/* Agrega más campos según tu modelo */}
             </DrawerBody>
             <DrawerFooter>
-              <Button colorScheme="blue" mr={3} type="submit" isLoading={isSubmitting}>
+              <Button
+                colorScheme="blue"
+                mr={3}
+                type="submit"
+                isLoading={isSubmitting}
+              >
                 Guardar
               </Button>
               <Button onClick={onClose}>Cancelar</Button>
@@ -104,7 +147,12 @@ const ProductEditDrawer = ({ isOpen, onClose, product, onSave, isSubmitting }) =
             <Button ref={cancelRef} onClick={() => setIsAlertOpen(false)}>
               Cancelar
             </Button>
-            <Button colorScheme="blue" onClick={handleConfirmEdit} ml={3} isLoading={isSubmitting}>
+            <Button
+              colorScheme="blue"
+              onClick={handleConfirmEdit}
+              ml={3}
+              isLoading={isSubmitting}
+            >
               Sí, guardar
             </Button>
           </AlertDialogFooter>
