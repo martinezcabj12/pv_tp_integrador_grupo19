@@ -11,10 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  clearError,
-  fetchProducts,
-} from "../../features/products/productsSlice";
+import { clearError, fetchProducts } from "../../redux/products/productsSlice";
 import { useEffect } from "react";
 import HomeLayout from "./Layout";
 

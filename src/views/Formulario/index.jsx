@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createProduct } from "../../features/products/productsSlice";
+import { createProduct } from "../../redux/products/productsSlice";
 import { useToastManager } from "../../hooks/useToastManager";
 import FormularioProductoLayout from "./Layout";
 
