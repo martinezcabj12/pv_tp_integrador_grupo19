@@ -73,7 +73,19 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(createProduct.fulfilled, (state, action) => {
-        state.items.push(action.payload);
+        let newProduct = action.payload;
+        const idExists = state.items.some((item) => item.id === newProduct.id);
+        if (idExists || newProduct.id === undefined || newProduct.id === null) {
+          // Buscar el id máximo actual y sumar 1
+          const maxId = state.items.reduce((max, item) =>
+            typeof item.id === "number" && item.id > max ? item.id : max, 0
+          );
+          newProduct = {
+            ...newProduct,
+            id: maxId + 1,
+          };
+        }
+        state.items.push(newProduct);
         state.loading = false;
         state.error = null;
       })
@@ -83,8 +95,8 @@ const productSlice = createSlice({
       })
       .addCase(updateProductAsync.fulfilled, (state, action) => {
         const updated = action.payload;
-        state.items = state.items.map(product =>
-          product.id === updated.id ? { ...product, ...updated } : product
+        state.items = state.items.map((product) =>
+          product.id === updated.id ? { ...product, ...updated } : product,
         );
       })
       .addCase(updateProductAsync.rejected, (state, action) => {
@@ -92,7 +104,7 @@ const productSlice = createSlice({
       })
       .addCase(deleteProductAsync.fulfilled, (state, action) => {
         const deletedId = action.payload.id;
-        state.items = state.items.filter(product => product.id !== deletedId);
+        state.items = state.items.filter((product) => product.id !== deletedId);
         state.loading = false;
         state.error = null;
       })
@@ -127,13 +139,16 @@ export const updateProductAsync = createAsyncThunk(
   "products/updateProductAsync",
   async (updatedProduct, { rejectWithValue }) => {
     try {
-      const response = await fetch(`https://fakestoreapi.com/products/${updatedProduct.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `https://fakestoreapi.com/products/${updatedProduct.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedProduct),
         },
-        body: JSON.stringify(updatedProduct),
-      });
+      );
       if (!response.ok) {
         throw new Error("Error al actualizar el producto");
       }
@@ -141,7 +156,7 @@ export const updateProductAsync = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 // Acción asincrona para eliminar un producto en la API y actualizar el store
@@ -163,7 +178,7 @@ export const deleteProductAsync = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const {

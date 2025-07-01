@@ -10,17 +10,19 @@ import {
   Badge,
   keyframes,
   Box,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../features/products/productsSlice";
+import { toggleFavorite } from "../redux/products/productsSlice";
 import { useToastManager } from "../hooks/useToastManager";
 import RatingStars from "./RatingStars";
 import FavButton from "./FavButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ProductEditDrawer from "./ProductEditDrawer";
-import { updateProductAsync, deleteProductAsync } from "../features/products/productsSlice";
+import {
+  updateProductAsync,
+  deleteProductAsync,
+} from "../redux/products/productsSlice";
 import ConfirmDialog from "./ConfirmDialog";
 
 // Animación para el corazón cuando se marca como favorito
@@ -33,7 +35,8 @@ const heartPulse = keyframes`
 const ProductCard = ({ items }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { showFavoriteToast, showSuccessToast, showErrorToast } = useToastManager();
+  const { showFavoriteToast, showSuccessToast, showErrorToast } =
+    useToastManager();
   const favorites = useSelector((state) => state.products.favorites);
   const isFavorite = favorites.includes(items.id);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -50,11 +53,12 @@ const ProductCard = ({ items }) => {
       if (deleteProductAsync.fulfilled.match(resultAction)) {
         showSuccessToast(
           "Producto eliminado",
-          `El producto "${items.title}" fue eliminado correctamente.`
+          `El producto "${items.title}" fue eliminado correctamente.`,
         );
       } else {
         showErrorToast(
-          resultAction.payload || "No se pudo eliminar el producto. Intenta nuevamente."
+          resultAction.payload ||
+            "No se pudo eliminar el producto. Intenta nuevamente.",
         );
       }
     } catch (error) {
@@ -227,7 +231,7 @@ const ProductCard = ({ items }) => {
         </Badge>
 
         {/* Rating */}
-        {items.rating && items.rating.rate && (
+        {items.rating?.rate && (
           <Box mb={3}>
             <RatingStars rate={items.rating.rate} count={items.rating.count} />
           </Box>
@@ -264,7 +268,7 @@ const ProductCard = ({ items }) => {
               boxShadow: "md",
             }}
           >
-            ✏️ Editar
+            ✏ Editar
           </Button>
           <Button
             onClick={handleVerDetalle}
@@ -319,8 +323,6 @@ const ProductCard = ({ items }) => {
       />
     </Card>
   );
-
 };
 
 export default ProductCard;
-

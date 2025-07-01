@@ -1,11 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
-import Home from "./views/Home";
 import Footer from "./components/Footer";
-import Favoritos from "./views/Favoritos";
-import Detalle from "./pages/Detalle";
 import ScrollToTop from "./components/ScrollToTop";
+import Detalle from "./views/Detalle";
+import Favoritos from "./views/Favoritos";
 import FormularioProducto from "./views/Formulario";
+import Home from "./views/Home";
 
 function App() {
   return (
