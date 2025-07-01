@@ -73,7 +73,19 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(createProduct.fulfilled, (state, action) => {
-        state.items.push(action.payload);
+        let newProduct = action.payload;
+        const idExists = state.items.some((item) => item.id === newProduct.id);
+        if (idExists || newProduct.id === undefined || newProduct.id === null) {
+          // Buscar el id máximo actual y sumar 1
+          const maxId = state.items.reduce((max, item) =>
+            typeof item.id === "number" && item.id > max ? item.id : max, 0
+          );
+          newProduct = {
+            ...newProduct,
+            id: maxId + 1,
+          };
+        }
+        state.items.push(newProduct);
         state.loading = false;
         state.error = null;
       })

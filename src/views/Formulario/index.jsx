@@ -58,6 +58,7 @@ const FormularioProducto = () => {
     <FormularioProductoLayout
       form={form}
       imgError={imgError}
+      setImgError={setImgError}
       loading={loading}
       handleChange={handleChange}
       handleSubmit={handleSubmit}

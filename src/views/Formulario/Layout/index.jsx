@@ -26,6 +26,7 @@ const categorias = [
 const FormularioProductoLayout = ({
   form,
   imgError,
+  setImgError,
   loading,
   handleChange,
   handleSubmit,
@@ -117,8 +118,8 @@ const FormularioProductoLayout = ({
                 alt="Vista previa"
                 maxH="100%"
                 objectFit="contain"
-                onError={() => imgError(true)}
-                onLoad={() => imgError(false)}
+                onError={() => setImgError(true)}
+                onLoad={() => setImgError(false)}
               />
             ) : (
               <Text color="gray.400">La imagen aparecerá aquí</Text>
