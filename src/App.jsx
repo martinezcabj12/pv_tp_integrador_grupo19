@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import "./App.css";
 import AppRouter from "./AppRouter";
 import { useDispatch } from "react-redux";
-import { fetchProducts } from "./features/products/productsSlice";
+import { fetchProducts } from "./redux/products/productsSlice";
 function App() {
   const dispatch = useDispatch();
 
