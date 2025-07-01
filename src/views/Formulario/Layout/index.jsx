@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { FaDollarSign } from "react-icons/fa";
 
-const categorias = [
+export const categorias = [
   "electronics",
   "jewelery",
   "men's clothing",

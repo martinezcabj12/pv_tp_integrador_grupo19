@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ConfirmDialog from "./ConfirmDialog";
 import {
+  Select,
   Drawer,
   DrawerOverlay,
   DrawerContent,
@@ -15,6 +16,7 @@ import {
   Textarea,
   Box,
 } from "@chakra-ui/react";
+import { categorias } from "../views/Formulario/Layout";
 
 const ProductEditDrawer = ({
   isOpen,
@@ -63,11 +65,7 @@ const ProductEditDrawer = ({
             flexDirection="column"
             height="calc(100vh - 80px)"
           >
-            <DrawerBody
-              flex="1"
-              overflowY="auto"
-              pb={4}
-            >
+            <DrawerBody flex="1" overflowY="auto" pb={4}>
               <FormControl mb={4}>
                 <FormLabel>Título</FormLabel>
                 <Input
@@ -80,12 +78,18 @@ const ProductEditDrawer = ({
 
               <FormControl mb={4}>
                 <FormLabel>Categoria</FormLabel>
-                <Input
+                <Select
                   name="category"
                   value={editData.category || ""}
                   onChange={handleChange}
-                  required
-                />
+                  placeholder="Seleccionar categoría"
+                >
+                  {categorias.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </Select>
               </FormControl>
 
               <FormControl mb={4}>
@@ -141,10 +145,7 @@ const ProductEditDrawer = ({
               >
                 Guardar
               </Button>
-              <Button
-                onClick={onClose}
-                variant="outline"
-              >
+              <Button onClick={onClose} variant="outline">
                 Cancelar
               </Button>
             </DrawerFooter>
