@@ -91,15 +91,12 @@ const Navbar = () => {
           fontFamily={"Onyra"}
           display={{ base: "none", md: "flex" }}
         >
-          {user && (
-            <>
-              {links.map((link) => (
-                <NavLink key={link.name} path={link.path} icon={link.icon}>
-                  {link.name}
-                </NavLink>
-              ))}
-            </>
-          )}
+          {user &&
+            links.map((link) => (
+              <NavLink key={link.name} path={link.path} icon={link.icon}>
+                {link.name}
+              </NavLink>
+            ))}
           {user ? (
             <>
               <Box mx={2} display="flex" alignItems="center">
