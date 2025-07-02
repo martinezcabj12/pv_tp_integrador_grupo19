@@ -10,7 +10,18 @@ const RegisterLayout = ({ form, error, handleChange, handleSubmit }) => (
       required
       style={{ display: "block", width: "100%", marginBottom: 10 }}
     />
-    <input
+  <select 
+  name="gender"
+  value={form.gender}
+  onChange={handleChange}
+  required
+  style={{ display: "block", width: "100%", marginBottom: 10 }}
+  >
+    <option value=""> Seleccione sexo: </option>
+    <option value="male">Hombre</option>
+    <option value="female">Mujer</option>
+    </select>  
+  <input
       type="email"
       name="email"
       placeholder="Correo"

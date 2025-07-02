@@ -5,6 +5,7 @@ import RegisterLayout from "./Layout";
 const Register = () => {
   const [form, setForm] = useState({
     name: "",
+    gender:"",
     email: "",
     password: "",
     confirm: "",
@@ -36,6 +37,7 @@ const Register = () => {
     users.push({
       id: Date.now().toString(),
       name: form.name,
+      gender: form.gender,
       email: form.email,
       password: form.password,
     });

@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { FiLogOut } from "react-icons/fi";
+import { FaUserAlt } from "react-icons/fa";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { AiFillHome, AiFillHeart, AiOutlinePlusCircle } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
@@ -90,16 +91,27 @@ const Navbar = () => {
           spacing={4}
           fontFamily={"Onyra"}
           display={{ base: "none", md: "flex" }}
-        >
+        > 
           {user &&
             links.map((link) => (
               <NavLink key={link.name} path={link.path} icon={link.icon}>
                 {link.name}
               </NavLink>
             ))}
-          {user ? (
-            <>
-              <Box mx={2} display="flex" alignItems="center">
+                 {user ? (
+                <>           
+              <Box mx={2} display="flex" alignItems="center">        
+                <FaUserAlt
+                 size={24}
+                 style={{ 
+                  color:
+                  user.gender === "female"
+                    ? "fuchsia"
+                    : "blue",
+                  marginRight: 6,
+                        
+                 }}
+                 /> 
                 Bienvenido, {user.name}
                 <IconButton
                   icon={<FiLogOut />}
@@ -141,7 +153,7 @@ const Navbar = () => {
             )}
             {user ? (
               <>
-                <Box mx={2} display="flex" alignItems="center">
+                <Box mx={2} display="flex" alignItems="center">    
                   Bienvenido, {user.name}
                   <IconButton
                     icon={<FiLogOut />}
