@@ -9,9 +9,11 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { Link as RouterLink } from "react-router-dom";
+import { FiLogOut } from "react-icons/fi";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { AiFillHome, AiFillHeart, AiOutlinePlusCircle } from "react-icons/ai";
-
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/auth/authSlice";
 const links = [
   { name: "Inicio", path: "/", icon: <AiFillHome /> },
   { name: "Favoritos", path: "/favoritos", icon: <AiFillHeart /> },
@@ -43,6 +45,15 @@ const NavLink = ({ path, children, icon }) => (
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const user = useSelector((state) => state.auth && state.auth.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("sessionUser");
+    dispatch(logout());
+    navigate("/login");
+  };
 
   return (
     <Box bg="blue.500" px={4} mt={4} mx={2} color="white" borderRadius={"1rem"}>
@@ -80,11 +91,37 @@ const Navbar = () => {
           fontFamily={"Onyra"}
           display={{ base: "none", md: "flex" }}
         >
-          {links.map((link) => (
-            <NavLink key={link.name} path={link.path} icon={link.icon}>
-              {link.name}
-            </NavLink>
-          ))}
+          {user && (
+            <>
+              {links.map((link) => (
+                <NavLink key={link.name} path={link.path} icon={link.icon}>
+                  {link.name}
+                </NavLink>
+              ))}
+            </>
+          )}
+          {user ? (
+            <>
+              <Box mx={2} display="flex" alignItems="center">
+                Bienvenido, {user.email}
+                <IconButton
+                  icon={<FiLogOut />}
+                  onClick={handleLogout}
+                  aria-label="Cerrar sesión"
+                  ml={2}
+                  colorScheme="white"
+                  variant="outline"
+                  size="sm"
+                  _hover={{ bg: "red.500", color: "white" }}
+                />
+              </Box>
+            </>
+          ) : (
+            <>
+              <NavLink path="/login">Login</NavLink>
+              <NavLink path="/register">Registrarse</NavLink>
+            </>
+          )}
         </HStack>
       </Flex>
 
@@ -96,15 +133,42 @@ const Navbar = () => {
           display={{ md: "none" }}
         >
           <Stack as={"nav"} spacing={2}>
-            {links.map((link) => (
-              <NavLink key={link.name} path={link.path} icon={link.icon}>
-                {link.name}
-              </NavLink>
-            ))}
+            {user && (
+              <>
+                {links.map((link) => (
+                  <NavLink key={link.name} path={link.path} icon={link.icon}>
+                    {link.name}
+                  </NavLink>
+                ))}
+              </>
+            )}
+            {user ? (
+              <>
+                <Box mx={2} display="flex" alignItems="center">
+                  Bienvenido, {user.email}
+                  <IconButton
+                    icon={<FiLogOut />}
+                    onClick={handleLogout}
+                    aria-label="Cerrar sesión"
+                    ml={2}
+                    colorScheme="white"
+                    variant="outline"
+                    size="sm"
+                    _hover={{ bg: "red.500", color: "white" }}
+                  />
+                </Box>
+              </>
+            ) : (
+              <>
+                <NavLink path="/login">Login</NavLink>
+                <NavLink path="/register">Registrarse</NavLink>
+              </>
+            )}
           </Stack>
         </Box>
       ) : null}
     </Box>
   );
 };
+
 export default Navbar;
