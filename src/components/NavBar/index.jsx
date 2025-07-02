@@ -103,7 +103,7 @@ const Navbar = () => {
           {user ? (
             <>
               <Box mx={2} display="flex" alignItems="center">
-                Bienvenido, {user.email}
+                Bienvenido, {user.name}
                 <IconButton
                   icon={<FiLogOut />}
                   onClick={handleLogout}
@@ -145,7 +145,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <Box mx={2} display="flex" alignItems="center">
-                  Bienvenido, {user.email}
+                  Bienvenido, {user.name}
                   <IconButton
                     icon={<FiLogOut />}
                     onClick={handleLogout}

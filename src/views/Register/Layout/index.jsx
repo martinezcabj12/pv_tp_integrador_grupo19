@@ -2,6 +2,15 @@ const RegisterLayout = ({ form, error, handleChange, handleSubmit }) => (
   <form onSubmit={handleSubmit} style={{ maxWidth: 300, margin: "2rem auto" }}>
     <h2>Registro</h2>
     <input
+      type="text"
+      name="name"
+      placeholder="Nombre completo"
+      value={form.name}
+      onChange={handleChange}
+      required
+      style={{ display: "block", width: "100%", marginBottom: 10 }}
+    />
+    <input
       type="email"
       name="email"
       placeholder="Correo"
@@ -29,7 +38,9 @@ const RegisterLayout = ({ form, error, handleChange, handleSubmit }) => (
       style={{ display: "block", width: "100%", marginBottom: 10 }}
     />
     {error && <p style={{ color: "red" }}>{error}</p>}
-    <button type="submit" style={{ width: "100%" }}>Registrarse</button>
+    <button type="submit" style={{ width: "100%" }}>
+      Registrarse
+    </button>
   </form>
 );
 

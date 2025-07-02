@@ -3,7 +3,12 @@ import { useNavigate } from "react-router-dom";
 import RegisterLayout from "./Layout";
 
 const Register = () => {
-  const [form, setForm] = useState({ email: "", password: "", confirm: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -30,6 +35,7 @@ const Register = () => {
     }
     users.push({
       id: Date.now().toString(),
+      name: form.name,
       email: form.email,
       password: form.password,
     });

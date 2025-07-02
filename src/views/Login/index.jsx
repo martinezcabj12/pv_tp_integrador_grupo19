@@ -18,11 +18,11 @@ const Login = () => {
     e.preventDefault();
     const users = JSON.parse(localStorage.getItem("users") || "[]");
     const user = users.find(
-      (u) => u.email === form.email && u.password === form.password
+      (u) => u.email === form.email && u.password === form.password,
     );
     if (user) {
-      localStorage.setItem("sessionUser", JSON.stringify({ id: user.id, email: user.email }));
-      dispatch(loginSuccess({ id: user.id, email: user.email }));
+      localStorage.setItem("sessionUser", JSON.stringify(user));
+      dispatch(loginSuccess(user));
       navigate("/");
     } else {
       setError("Credenciales inválidas");
