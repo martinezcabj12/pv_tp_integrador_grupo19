@@ -1,57 +1,36 @@
-import { 
-  Box, 
-  Image, 
-  Text, 
-  Heading, 
-  Grid, 
-  GridItem, 
-  Badge, 
-  VStack, 
-  HStack, 
-  Divider, 
-  Button, 
+import {
+  Badge,
+  Box,
   Container,
-  Icon,
+  Divider,
+  Grid,
+  GridItem,
+  HStack,
+  Heading,
+  Image,
+  SimpleGrid,
   Stat,
+  StatHelpText,
   StatLabel,
   StatNumber,
-  StatHelpText,
-  Card,
-  CardBody,
+  Text,
+  VStack,
   useColorModeValue,
-  Flex,
-  SimpleGrid
 } from "@chakra-ui/react";
-import { FaTruck, FaShieldAlt, FaUndoAlt, FaStore } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../features/products/productsSlice";
-import { useToastManager } from "../hooks/useToastManager";
-import FavButton from "./FavButton";
-import RatingStars from "./RatingStars";
+import RatingStars from "../../../components/RatingStars";
+import FavButton from "../../../components/FavButton";
 
-const ProductoDetalle = ({ producto }) => {
-  const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.products.favorites);
-  const isFavorite = favorites.includes(producto.id);
-  const { showFavoriteToast } = useToastManager();
+const getStockInfo = (ratingCount) => {
+  if (ratingCount > 200)
+    return { stock: "Alto", color: "green", cantidad: "25+" };
+  if (ratingCount > 100)
+    return { stock: "Medio", color: "yellow", cantidad: "10-25" };
+  if (ratingCount > 50)
+    return { stock: "Bajo", color: "orange", cantidad: "5-10" };
+  return { stock: "Muy Bajo", color: "red", cantidad: "1-5" };
+};
 
-  // Simular stock basado en el rating count
-  const getStockInfo = (ratingCount) => {
-    if (ratingCount > 200) return { stock: "Alto", color: "green", cantidad: "25+" };
-    if (ratingCount > 100) return { stock: "Medio", color: "yellow", cantidad: "10-25" };
-    if (ratingCount > 50) return { stock: "Bajo", color: "orange", cantidad: "5-10" };
-    return { stock: "Muy Bajo", color: "red", cantidad: "1-5" };
-  };
-
-  const handleFavoriteToggle = () => {
-    if (isFavorite) {
-      showFavoriteToast(producto.title, false);
-    } else {
-      showFavoriteToast(producto.title, true);
-    }
-    dispatch(toggleFavorite(producto.id));
-  };
-
+const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
   const stockInfo = getStockInfo(producto.rating?.count || 0);
   const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -72,7 +51,7 @@ const ProductoDetalle = ({ producto }) => {
           >
             <FavButton
               isFavorite={isFavorite}
-              onClick={handleFavoriteToggle}
+              onClick={onFavoriteToggle}
               position="absolute"
               top="16px"
               right="16px"
@@ -83,16 +62,15 @@ const ProductoDetalle = ({ producto }) => {
               src={producto.image}
               alt={producto.title}
               w="100%"
-              h="400px"
+              h="300px"
               objectFit="contain"
-              borderRadius="xl"
             />
           </Box>
         </GridItem>
 
         {/* Información del producto */}
         <GridItem>
-          <VStack align="stretch" spacing={6}>
+          <VStack align="stretch" spacing={5}>
             {/* Título y precio */}
             <Box>
               <Badge
@@ -119,9 +97,9 @@ const ProductoDetalle = ({ producto }) => {
             <HStack spacing={8}>
               <Box>
                 {producto.rating && (
-                  <RatingStars 
-                    rate={producto.rating.rate} 
-                    count={producto.rating.count} 
+                  <RatingStars
+                    rate={producto.rating.rate}
+                    count={producto.rating.count}
                   />
                 )}
               </Box>
@@ -168,55 +146,6 @@ const ProductoDetalle = ({ producto }) => {
                 <StatHelpText>{stockInfo.cantidad}</StatHelpText>
               </Stat>
             </SimpleGrid>
-
-            {/* Características adicionales */}
-            <Card variant="outline">
-              <CardBody>
-                <VStack align="stretch" spacing={3}>
-                  <HStack>
-                    <Icon as={FaTruck} color="green.500" />
-                    <Text>Envío gratis en compras mayores a $50</Text>
-                  </HStack>
-                  <HStack>
-                    <Icon as={FaShieldAlt} color="blue.500" />
-                    <Text>Garantía de satisfacción</Text>
-                  </HStack>
-                  <HStack>
-                    <Icon as={FaUndoAlt} color="orange.500" />
-                    <Text>Devoluciones gratuitas hasta 30 días</Text>
-                  </HStack>
-                  <HStack>
-                    <Icon as={FaStore} color="purple.500" />
-                    <Text>Vendido y enviado por FakeStore</Text>
-                  </HStack>
-                </VStack>
-              </CardBody>
-            </Card>
-
-            {/* Botones de acción */}
-            <Flex gap={4} pt={4}>
-              <Button 
-                colorScheme="blue" 
-                size="lg" 
-                flex={2}
-                borderRadius="full"
-                _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}
-                transition="all 0.2s"
-              >
-                Comprar ahora
-              </Button>
-              <Button 
-                variant="outline" 
-                colorScheme="blue" 
-                size="lg" 
-                flex={1}
-                borderRadius="full"
-                _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}
-                transition="all 0.2s"
-              >
-                Agregar al carrito
-              </Button>
-            </Flex>
           </VStack>
         </GridItem>
       </Grid>
@@ -224,4 +153,4 @@ const ProductoDetalle = ({ producto }) => {
   );
 };
 
-export default ProductoDetalle;
+export default ProductoDetalleLayout;

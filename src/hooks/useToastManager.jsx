@@ -1,7 +1,7 @@
 // hooks/useToastManager.js
 import { useToast } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { undoRemoveFavorite } from "../features/products/productsSlice";
+import { undoRemoveFavorite } from "../redux/products/productsSlice";
 
 export const useToastManager = () => {
   const toast = useToast();
@@ -9,13 +9,13 @@ export const useToastManager = () => {
   const items = useSelector((state) => state.products.items);
 
   const showFavoriteToast = (productId, isAdding) => {
-    const product = items.find(item => item.id === productId);
+    const product = items.find((item) => item.id === productId);
     const productName = product ? product.title : "Producto";
 
     if (isAdding) {
       // Toast cuando se agrega a favoritos
       toast({
-        title: "¡Agregado a favoritos! ❤️",
+        title: "¡Agregado a favoritos! ❤",
         description: `${productName} se agregó a tus favoritos`,
         status: "success",
         duration: 3000,
@@ -32,14 +32,14 @@ export const useToastManager = () => {
             borderColor="green.300"
           >
             <HStack spacing={3}>
-              <Box fontSize="24px">❤️</Box>
+              <Box fontSize="24px">❤</Box>
               <VStack spacing={1} align="start" flex="1">
                 <Text fontWeight="bold" fontSize="sm">
                   ¡Agregado a favoritos!
                 </Text>
                 <Text fontSize="xs" opacity={0.9}>
-                  {productName.length > 40 
-                    ? `${productName.substring(0, 40)}...` 
+                  {productName.length > 40
+                    ? `${productName.substring(0, 40)}...`
                     : productName}
                 </Text>
               </VStack>
@@ -80,8 +80,8 @@ export const useToastManager = () => {
                     Removido de favoritos
                   </Text>
                   <Text fontSize="xs" opacity={0.9}>
-                    {productName.length > 35 
-                      ? `${productName.substring(0, 35)}...` 
+                    {productName.length > 35
+                      ? `${productName.substring(0, 35)}...`
                       : productName}
                   </Text>
                 </VStack>
@@ -105,7 +105,7 @@ export const useToastManager = () => {
                     onClose();
                     // Mostrar confirmación de que se deshizo la acción
                     toast({
-                      title: "¡Restaurado! ❤️",
+                      title: "¡Restaurado! ❤",
                       description: "El producto volvió a tus favoritos",
                       status: "success",
                       duration: 2000,
@@ -168,4 +168,12 @@ export const useToastManager = () => {
 };
 
 // Necesitarás estos imports adicionales en la parte superior del archivo:
-import { Box, Button, CloseButton, HStack, VStack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  CloseButton,
+  HStack,
+  VStack,
+  Text,
+} from "@chakra-ui/react";
+

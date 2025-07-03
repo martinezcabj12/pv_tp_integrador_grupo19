@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import ConfirmDialog from "./ConfirmDialog";
 import {
+  Select,
   Drawer,
   DrawerOverlay,
   DrawerContent,
@@ -11,23 +13,25 @@ import {
   FormLabel,
   Input,
   Button,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  Textarea
+  Textarea,
+  Box,
 } from "@chakra-ui/react";
+import { categorias } from "../views/Formulario/Layout";
 
-const ProductEditDrawer = ({ isOpen, onClose, product, onSave, isSubmitting }) => {
+const ProductEditDrawer = ({
+  isOpen,
+  onClose,
+  product,
+  onSave,
+  isSubmitting,
+}) => {
   const [editData, setEditData] = useState(product || {});
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const cancelRef = React.useRef();
+  // const cancelRef = React.useRef();
 
   React.useEffect(() => {
     if (isOpen) setEditData(product || {});
-  }, [product,isOpen]);
+  }, [product, isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,70 +50,119 @@ const ProductEditDrawer = ({ isOpen, onClose, product, onSave, isSubmitting }) =
 
   return (
     <>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
         <DrawerOverlay />
-        <DrawerContent display="flex" flexDirection="column" height="100%">
+        <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Editar producto</DrawerHeader>
-          <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-            <DrawerBody flex="1">
-              <FormControl mb={3}>
+          <DrawerHeader borderBottomWidth="1px" flexShrink={0}>
+            Editar producto
+          </DrawerHeader>
+
+          <Box
+            as="form"
+            onSubmit={handleSubmit}
+            display="flex"
+            flexDirection="column"
+            height="calc(100vh - 80px)"
+          >
+            <DrawerBody flex="1" overflowY="auto" pb={4}>
+              <FormControl mb={4}>
                 <FormLabel>Título</FormLabel>
-                <Input name="title" value={editData.title || ""} onChange={handleChange} required />
+                <Input
+                  name="title"
+                  value={editData.title || ""}
+                  onChange={handleChange}
+                  required
+                />
               </FormControl>
-              <FormControl mb={3}>
+
+              <FormControl mb={4}>
+                <FormLabel>Categoria</FormLabel>
+                <Select
+                  name="category"
+                  value={editData.category || ""}
+                  onChange={handleChange}
+                  placeholder="Seleccionar categoría"
+                >
+                  {categorias.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl mb={4}>
+                <FormLabel>Imagen URL</FormLabel>
+                <Input
+                  name="image"
+                  value={editData.image || ""}
+                  onChange={handleChange}
+                  required
+                />
+              </FormControl>
+
+              <FormControl mb={4}>
                 <FormLabel>Precio</FormLabel>
-                <Input name="price" type="number" value={editData.price || ""} onChange={handleChange} required />
+                <Input
+                  name="price"
+                  type="number"
+                  step="0.01"
+                  value={editData.price || ""}
+                  onChange={handleChange}
+                  required
+                />
               </FormControl>
-              <FormControl mb={3}>
+
+              <FormControl mb={4}>
                 <FormLabel>Descripción</FormLabel>
                 <Textarea
                   name="description"
                   value={editData.description || ""}
                   onChange={handleChange}
                   required
-                  minH="100px"
-                  maxH="200px"
+                  minH="80px"
+                  maxH="150px"
                   resize="vertical"
-                  overflowY="auto"
                 />
               </FormControl>
-              {/* Agrega más campos según tu modelo */}
             </DrawerBody>
-            <DrawerFooter>
-              <Button colorScheme="blue" mr={3} type="submit" isLoading={isSubmitting}>
+
+            <DrawerFooter
+              borderTopWidth="1px"
+              flexShrink={0}
+              bg="white"
+              position="sticky"
+              bottom={0}
+              zIndex={1}
+            >
+              <Button
+                colorScheme="blue"
+                mr={3}
+                type="submit"
+                isLoading={isSubmitting}
+                loadingText="Guardando..."
+              >
                 Guardar
               </Button>
-              <Button onClick={onClose}>Cancelar</Button>
+              <Button onClick={onClose} variant="outline">
+                Cancelar
+              </Button>
             </DrawerFooter>
-          </form>
+          </Box>
         </DrawerContent>
       </Drawer>
-      {/* AlertDialog de confirmación */}
-      <AlertDialog
+      <ConfirmDialog
         isOpen={isAlertOpen}
-        leastDestructiveRef={cancelRef}
         onClose={() => setIsAlertOpen(false)}
-        isCentered
-      >
-        <AlertDialogOverlay />
-        <AlertDialogContent>
-          <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Confirmar edición
-          </AlertDialogHeader>
-          <AlertDialogBody>
-            ¿Estás seguro de que quieres guardar los cambios en este producto?
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={() => setIsAlertOpen(false)}>
-              Cancelar
-            </Button>
-            <Button colorScheme="blue" onClick={handleConfirmEdit} ml={3} isLoading={isSubmitting}>
-              Sí, guardar
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        onConfirm={handleConfirmEdit}
+        title="Confirmar edición"
+        message="¿Estás seguro de que quieres guardar los cambios en este producto?"
+        confirmText="Sí, guardar"
+        cancelText="Cancelar"
+        isLoading={isSubmitting}
+        confirmColor="blue"
+      />
     </>
   );
 };

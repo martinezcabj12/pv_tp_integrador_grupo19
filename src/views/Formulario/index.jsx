@@ -1,28 +1,13 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createProduct } from "../../features/products/productsSlice";
-import {
-  Box,
-  Button,
-  Input,
-  FormControl,
-  FormLabel,
-  Select,
-  Textarea,
-  Alert,
-} from "@chakra-ui/react";
-
-const categorias = [
-  "electronics",
-  "jewelery",
-  "men's clothing",
-  "women's clothing",
-];
+import { createProduct } from "../../redux/products/productsSlice";
+import { useToastManager } from "../../hooks/useToastManager";
+import FormularioProductoLayout from "./Layout";
 
 const FormularioProducto = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.products);
-
+  const { showErrorToast, showSuccessToast } = useToastManager();
   const [form, setForm] = useState({
     title: "",
     price: "",
@@ -30,19 +15,34 @@ const FormularioProducto = () => {
     category: "",
     image: "",
   });
+  const [imgError, setImgError] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    if (e.target.name === "image") setImgError(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.title || !form.price || !form.category) return;
+    if (!form.title || !form.price || !form.category || !form.image) {
+      showErrorToast("Por favor, llena todos los campos requeridos.");
+      return;
+    }
+    if (imgError) {
+      showErrorToast(
+        "No se pudo cargar la imagen. Verifica la URL antes de crear el producto.",
+      );
+      return;
+    }
     dispatch(
       createProduct({
         ...form,
         price: Number.parseFloat(form.price),
       }),
+    );
+    showSuccessToast(
+      "Producto Creado",
+      `El producto "${form.title}" fue creado exitosamente.`,
     );
     setForm({
       title: "",
@@ -51,62 +51,18 @@ const FormularioProducto = () => {
       category: "",
       image: "",
     });
+    setImgError(false);
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit} maxW="400px" mx="auto" p={4}>
-      <FormControl mb={3} isRequired>
-        <FormLabel>Título</FormLabel>
-        <Input name="title" value={form.title} onChange={handleChange} />
-      </FormControl>
-      <FormControl mb={3} isRequired>
-        <FormLabel>Precio</FormLabel>
-        <Input
-          name="price"
-          type="number"
-          value={form.price}
-          onChange={handleChange}
-        />
-      </FormControl>
-      <FormControl mb={3}>
-        <FormLabel>Descripción</FormLabel>
-        <Textarea
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-        />
-      </FormControl>
-      <FormControl mb={3} isRequired>
-        <FormLabel>Categoría</FormLabel>
-        <Select name="category" value={form.category} onChange={handleChange}>
-          <option value="">Seleccionar</option>
-          {categorias.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl mb={3}>
-        <FormLabel>Imagen (URL)</FormLabel>
-        <Input name="image" value={form.image} onChange={handleChange} />
-      </FormControl>
-      {error && (
-        <Alert status="error" mb={3}>
-          {error}
-        </Alert>
-      )}
-      <Button
-        type="submit"
-        colorScheme="blue"
-        isLoading={loading}
-        loadingText="Guardando..."
-        isDisabled={loading}
-        width="100%"
-      >
-        Crear producto
-      </Button>
-    </Box>
+    <FormularioProductoLayout
+      form={form}
+      imgError={imgError}
+      setImgError={setImgError}
+      loading={loading}
+      handleChange={handleChange}
+      handleSubmit={handleSubmit}
+    />
   );
 };
 
