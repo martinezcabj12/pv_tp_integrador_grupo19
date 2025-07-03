@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterLayout from "./Layout";
+import { useToastManager } from "../../hooks/useToastManager";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -12,6 +13,7 @@ const Register = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { showSuccessToast } = useToastManager();
 
   const validate = () => {
     if (!/\S+@\S+\.\S+/.test(form.email)) return "Correo inválido";
@@ -42,7 +44,7 @@ const Register = () => {
       password: form.password,
     });
     localStorage.setItem("users", JSON.stringify(users));
-    alert("¡Registro exitoso!");
+    showSuccessToast("¡Registro exitoso!", "Ya puedes iniciar sesión.");
     navigate("/login");
   };
 
