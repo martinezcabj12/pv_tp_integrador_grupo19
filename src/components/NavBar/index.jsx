@@ -7,6 +7,15 @@ import {
   Stack,
   Link as ChakraLink,
   Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Avatar,
+  Text,
+  VStack,
+  Divider,
+  useOutsideClick,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { FiLogOut } from "react-icons/fi";
@@ -15,6 +24,8 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { AiFillHome, AiFillHeart, AiOutlinePlusCircle } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/auth/authSlice";
+import { useState, useRef } from "react";
+
 const links = [
   { name: "Inicio", path: "/", icon: <AiFillHome /> },
   { name: "Favoritos", path: "/favoritos", icon: <AiFillHeart /> },
@@ -43,6 +54,135 @@ const NavLink = ({ path, children, icon }) => (
     {children}
   </ChakraLink>
 );
+
+// Componente para el dropdown del usuario
+const UserDropdown = ({ user, onLogout }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const dropdownRef = useRef();
+
+  useOutsideClick({
+    ref: dropdownRef,
+    handler: () => setIsOpen(false),
+  });
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <Box position="relative" ref={dropdownRef}>
+      {/* Botón circular con el icono */}
+      <Box
+        as="button"
+        onClick={toggleDropdown}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        bg="white"
+        borderRadius="50%"
+        width="40px"
+        height="40px"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        cursor="pointer"
+        transition="all 0.2s ease"
+        _hover={{
+          bg: isHovered ? "black" : "white",
+          transform: "scale(1.05)",
+        }}
+        boxShadow="md"
+      >
+        <FaUserAlt
+          size={20}
+          style={{
+            color: isHovered ? "white" : (user.gender === "female" ? "#DDA0DD" : "#87CEEB"), // Colores pastel
+          }}
+        />
+      </Box>
+
+      {/* Dropdown Menu */}
+      {isOpen && (
+        <Box
+          position="absolute"
+          top="calc(100% + 8px)"
+          right="0"
+          width="250px"
+          bg="white"
+          border="1px solid"
+          borderColor="gray.200"
+          borderRadius="lg"
+          boxShadow="xl"
+          p={4}
+          zIndex={1000}
+        >
+          <VStack align="stretch" spacing={3}>
+            {/* Información del usuario */}
+            <Box>
+              <HStack spacing={3}>
+                <Avatar
+                  size="md"
+                  name={user.name}
+                  bg={user.gender === "female" ? "purple.300" : "blue.300"}
+                  color="white"
+                />
+                <Box>
+                  <Text fontWeight="semibold" fontSize="sm" color="gray.800">
+                    {user.name}
+                  </Text>
+                  <Text fontSize="xs" color="gray.500">
+                    {user.email || "usuario@ejemplo.com"}
+                  </Text>
+                </Box>
+              </HStack>
+            </Box>
+
+            <Divider />
+
+            {/* Opciones del menú */}
+            <VStack align="stretch" spacing={2}>
+              <Box
+                as="button"
+                display="flex"
+                alignItems="center"
+                gap={3}
+                px={3}
+                py={2}
+                borderRadius="md"
+                _hover={{ bg: "gray.100" }}
+                color="gray.700"
+                fontSize="sm"
+              >
+                <FaUserAlt size={14} />
+                <Text>Mi Perfil</Text>
+              </Box>
+            </VStack>
+
+            <Divider />
+
+            {/* Botón de Cerrar Sesión */}
+            <Box
+              as="button"
+              display="flex"
+              alignItems="center"
+              gap={3}
+              px={3}
+              py={2}
+              borderRadius="md"
+              _hover={{ bg: "red.50" }}
+              color="red.500"
+              fontSize="sm"
+              onClick={onLogout}
+            >
+              <FiLogOut size={14} />
+              <Text>Cerrar Sesión</Text>
+            </Box>
+          </VStack>
+        </Box>
+      )}
+    </Box>
+  );
+};
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -98,32 +238,10 @@ const Navbar = () => {
                 {link.name}
               </NavLink>
             ))}
-                 {user ? (
-                <>           
-              <Box mx={2} display="flex" alignItems="center">        
-                <FaUserAlt
-                 size={24}
-                 style={{ 
-                  color:
-                  user.gender === "female"
-                    ? "fuchsia"
-                    : "blue",
-                  marginRight: 6,
-                        
-                 }}
-                 /> 
-                Bienvenido, {user.name}
-                <IconButton
-                  icon={<FiLogOut />}
-                  onClick={handleLogout}
-                  aria-label="Cerrar sesión"
-                  ml={2}
-                  colorScheme="white"
-                  variant="outline"
-                  size="sm"
-                  _hover={{ bg: "red.500", color: "white" }}
-                />
-              </Box>
+          {user ? (
+            <>
+              {/* Aquí está el cambio principal - solo el componente UserDropdown */}
+              <UserDropdown user={user} onLogout={handleLogout} />
             </>
           ) : (
             <>
@@ -153,18 +271,9 @@ const Navbar = () => {
             )}
             {user ? (
               <>
-                <Box mx={2} display="flex" alignItems="center">    
-                  Bienvenido, {user.name}
-                  <IconButton
-                    icon={<FiLogOut />}
-                    onClick={handleLogout}
-                    aria-label="Cerrar sesión"
-                    ml={2}
-                    colorScheme="white"
-                    variant="outline"
-                    size="sm"
-                    _hover={{ bg: "red.500", color: "white" }}
-                  />
+                {/* Para móvil también usamos el dropdown */}
+                <Box mx={2} display="flex" alignItems="center" justifyContent="center">
+                  <UserDropdown user={user} onLogout={handleLogout} />
                 </Box>
               </>
             ) : (
