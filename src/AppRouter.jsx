@@ -9,7 +9,7 @@ import FormularioProducto from "./views/Formulario";
 import Home from "./views/Home";
 import Login from "./views/Login";
 import Register from "./views/Register";
-
+import Contactos from "./views/Contactos";
 
 function App() {
   return (
@@ -29,6 +29,7 @@ function App() {
             <Route path="/detalle/:id" element={<PrivateRoute><Detalle /></PrivateRoute>} />
             {/* Default */}
             <Route path="*" element={<Navigate to={"/"} />} />
+            <Route path="/contacto" element={<Contactos />} />
           </Routes>
         </main>
       </div>

@@ -1,4 +1,4 @@
-import { Box, Text, HStack, Link, Image } from "@chakra-ui/react";
+import { Box, Text, HStack, Link as ChakraLink, Image } from "@chakra-ui/react";
 import { FaGithub, FaEnvelope } from "react-icons/fa";
 
 const Footer = () => (
@@ -28,7 +28,7 @@ const Footer = () => (
         <Text fontSize={{ base: "12px", md: "md" }} textAlign="center">
           &copy; {new Date().getFullYear()} Grupo 19 - Programación Visual
         </Text>
-        <Link
+        <ChakraLink
           href="https://github.com/martinezcabj12/pv_tp_integrador_grupo19"
           isExternal
           color="white"
@@ -40,9 +40,9 @@ const Footer = () => (
           mt={{ base: 2, md: 0 }}
         >
           <FaGithub /> GitHub
-        </Link>
-        <Link
-          href="mailto:contacto@ejemplo.com"
+        </ChakraLink>
+        <ChakraLink
+          href="/contacto"
           color="white"
           fontWeight="bold"
           display="flex"
@@ -52,7 +52,7 @@ const Footer = () => (
           mt={{ base: 2, md: 0 }}
         >
           <FaEnvelope /> Contacto
-        </Link>
+        </ChakraLink>
       </HStack>
     </Box>
   </footer>
