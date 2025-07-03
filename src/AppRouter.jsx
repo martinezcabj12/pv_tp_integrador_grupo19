@@ -23,13 +23,13 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/contacto" element={<Contactos />} />
             <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
             <Route path="/favoritos" element={<PrivateRoute><Favoritos /></PrivateRoute>} />
             <Route path="/formulario" element={<PrivateRoute><FormularioProducto /></PrivateRoute>} />
             <Route path="/detalle/:id" element={<PrivateRoute><Detalle /></PrivateRoute>} />
             {/* Default */}
             <Route path="*" element={<Navigate to={"/"} />} />
-            <Route path="/contacto" element={<Contactos />} />
           </Routes>
         </main>
       </div>

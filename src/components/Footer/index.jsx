@@ -1,5 +1,6 @@
 import { Box, Text, HStack, Link as ChakraLink, Image } from "@chakra-ui/react";
 import { FaGithub, FaEnvelope } from "react-icons/fa";
+import { Link as RouterLink } from "react-router-dom";
 
 const Footer = () => (
   <footer>
@@ -42,7 +43,8 @@ const Footer = () => (
           <FaGithub /> GitHub
         </ChakraLink>
         <ChakraLink
-          href="/contacto"
+          as={RouterLink}
+          to="/contacto"
           color="white"
           fontWeight="bold"
           display="flex"
