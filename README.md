@@ -117,8 +117,115 @@ pv_tp_integrador_grupo19/
 ```
 
 ---
+## Actualizaciones según Trabajo Práctico Integrador pt.2 - 2025
 
-### Integrantes del Grupo 19
+Este proyecto evoluciona conforme a las consignas del Trabajo Práctico Integrador de Programación Visual 2025.  
+A continuación, se detallan los lineamientos y requisitos principales incorporados en esta etapa:
+
+ **Desarrollo Progresivo:**  
+  La aplicación se desarrolló de manera iterativa, sumando funcionalidades y mejoras en cada entrega, siguiendo las pautas y requerimientos definidos por la cátedra.
+ 
+ **Funcionalidades Principales Agregadas:**
+ 
+  + **Inicio de Sesion (Login y Logout):**
+    - Inicia sesion con tu correo electronico y contraseña podes acceder facilmente desde el menú como "Login".
+    - Cierra sesion desde tu perfil con un botón visto desde el menú principal alado del avatar.
+
+  + **Formulario de Registro (Registrarse)**:
+    - Registro accesible desde el inicio de sesion "Registrate aquí", tambien en el menú principal commo "Resgistrarse".
+    - Creacion de cuenta con nombre , género, correo, contraseña.
+    - Validacion para confirmar contraseña.
+    - Al iniciar sesion en el menú principal el avatar toma el color de azul o rosa, dependiendo tu sexo.
+    
+  + **Página de Inicio (Home):** 
+    - Listado de productos en tarjetas, mostrando ID, imagen, nombre, precio, descripción, categoría, botón de detalles y opción de favorito.
+    - Permite "Eliminar" productos precargados y creados y posee una validacion para confirmar eliminacion.
+    - Permite "Ver más" información ampliada del producto y posibilidad de modificar estado de favorito.
+    - Permite "Editar" productos existentes, con campos precargados.
+
+  + **Favoritos:**  
+    - Marcar/desmarcar productos como favoritos desde cualquier vista.
+    - Estado de favoritos centralizado y accesible globalmente.
+    - Visualización exclusiva de productos marcados como favoritos.
+
+  + **Formulario de Creación:**
+    - Accesible desde el menú principal como "Crear Producto"
+    - Permite crear nuevo producto con campos precargados agregandolo al final del Home.
+
+  + **Consumo de API:**  
+    - Los productos se obtienen de la API pública y se almacenan en el estado global.
+    - Todas las operaciones (favoritos, edición, eliminación) se aplican sobre estos datos.
+
+### Estructura del Proyecto
+
+```
+pv_tp_integrador_grupo19/
+├── README.md
+├── biome.json
+├── index.html
+├── package.json
+├── vite.config.js
+├── public/
+│   └── font/
+│       └── onyra.otf
+└── src/
+    ├── App.css
+    ├── App.jsx
+    ├── AppRouter.jsx
+    ├── index.css
+    ├── main.jsx
+    ├── app/
+    │   └── store.js
+    ├── components/
+    │   ├── ConfirmDialog.jsx 
+    │   ├── FavButton.jsx
+    │   ├── PrivateRoute.jsx
+    │   ├── ProductCard.jsx
+    │   ├── ProductEditDrawer.jsx
+    │   ├── RatingStars.jsx
+    │   ├── Footer/
+    │   │   └── index.jsx
+    │   ├── Header/
+    │   │   └── index.jsx
+    │   ├── NavBar/
+    │   │     └── index.jsx
+    |   └── ScrollToTop/
+    │       └── index.jsx
+    ├── redux/
+    │   ├─── auth/
+    │   │    └── authSlice.js
+    │   └─── products/
+    │        └── productsSlice.js
+    ├── hooks/
+    │   └── useToastManager.jsx/
+    └── views/
+        ├── Detalle/
+        │   ├── index.jsx
+        │   └── Layout/
+        │       └── ProductDetalle.jsx
+        ├── Home/
+        │    ├── index.jsx
+        │    └── Layout/
+        │        └── index.jsx
+        ├── Favoritos/
+        │    └── index.jsx
+        ├── Formulario/
+        │    ├── index.jsx
+        │    └── Layout/
+        │        └── index.jsx
+        ├── Login/
+        │    ├── index.jsx
+        │    └── Layout/
+        │        └── index.jsx       
+        └── Register/
+            ├── index.jsx
+            └── Layout/
+                └── index.jsx
+
+```
+---
+
+#### Integrantes del Grupo 19
 
 - BRISA ANAHÍ BARRO [GitHub](https://github.com/BarroBrisa)  
 - DARIO ABEL MARTINEZ [GitHub](https://github.com/martinezcabj12)  
