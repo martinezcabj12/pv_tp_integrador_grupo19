@@ -131,7 +131,6 @@ const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
               </Heading>
               <Text lineHeight="1.8" color="gray.600" mx={"2px"} px={4}>
                 {producto.description}
-                <Divider my={"10px"} />
               </Text>
             </Box>
 
