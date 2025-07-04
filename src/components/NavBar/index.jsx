@@ -56,7 +56,7 @@ const NavLink = ({ path, children, icon }) => (
 );
 
 // Componente para el dropdown del usuario
-const UserDropdown = ({ user, onLogout }) => {
+const UserDropdown = ({ user, onLogout, isMobile = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const dropdownRef = useRef();
@@ -106,8 +106,11 @@ const UserDropdown = ({ user, onLogout }) => {
         <Box
           position="absolute"
           top="calc(100% + 8px)"
-          right="0"
-          width="250px"
+          right={isMobile ? "auto" : "0"}
+          left={isMobile ? "50%" : "auto"}
+          transform={isMobile ? "translateX(-50%)" : "none"}
+          width={isMobile ? "280px" : "250px"}
+          maxWidth={isMobile ? "90vw" : "250px"}
           bg="white"
           border="1px solid"
           borderColor="gray.200"
@@ -126,11 +129,16 @@ const UserDropdown = ({ user, onLogout }) => {
                   bg={user.gender === "female" ? "purple.300" : "blue.300"}
                   color="white"
                 />
-                <Box>
+                <Box flex="1" minWidth="0">
                   <Text fontWeight="semibold" fontSize="sm" color="gray.800">
                     {user.name}
                   </Text>
-                  <Text fontSize="xs" color="gray.500">
+                  <Text 
+                    fontSize="xs" 
+                    color="gray.500"
+                    isTruncated
+                    maxWidth="100%"
+                  >
                     {user.email || "usuario@ejemplo.com"}
                   </Text>
                 </Box>
@@ -241,7 +249,7 @@ const Navbar = () => {
           {user ? (
             <>
               {/* Aquí está el cambio principal - solo el componente UserDropdown */}
-              <UserDropdown user={user} onLogout={handleLogout} />
+              <UserDropdown user={user} onLogout={handleLogout} isMobile={false} />
             </>
           ) : (
             <>
@@ -273,7 +281,7 @@ const Navbar = () => {
               <>
                 {/* Para móvil también usamos el dropdown */}
                 <Box mx={2} display="flex" alignItems="center" justifyContent="center">
-                  <UserDropdown user={user} onLogout={handleLogout} />
+                  <UserDropdown user={user} onLogout={handleLogout} isMobile={true} />
                 </Box>
               </>
             ) : (
