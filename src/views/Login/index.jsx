@@ -3,12 +3,14 @@ import { useDispatch } from "react-redux";
 import { loginSuccess, loginFailure } from "../../redux/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import LoginLayout from "./Layout";
+import { useToastManager } from "../../hooks/useToastManager";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { showSuccessToast } = useToastManager();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -23,6 +25,7 @@ const Login = () => {
     if (user) {
       localStorage.setItem("sessionUser", JSON.stringify(user));
       dispatch(loginSuccess(user));
+      showSuccessToast(`¡Bienvenid${user.gender === "female" ? "a" : "o"}, ${user.name}!`, "Has iniciado sesión correctamente.");
       navigate("/");
     } else {
       setError("Credenciales inválidas");

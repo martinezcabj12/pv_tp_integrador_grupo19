@@ -36,7 +36,12 @@ const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
   return (
-    <Container maxW="7xl" py={8}>
+    <Container
+      maxW={{ base: "100%", md: "7xl" }}
+      w="100%"
+      px={{ base: 2, md: 8 }}
+      py={{ base: 4, md: 8 }}
+    >
       <Grid templateColumns={{ base: "1fr", lg: "1fr 1fr" }} gap={8}>
         {/* Imagen del producto */}
         <GridItem>
@@ -45,9 +50,10 @@ const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
             borderRadius="2xl"
             border="1px"
             borderColor={borderColor}
-            p={8}
+            p={4}
             position="relative"
             boxShadow="lg"
+            mx={10}
           >
             <FavButton
               isFavorite={isFavorite}
@@ -62,7 +68,8 @@ const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
               src={producto.image}
               alt={producto.title}
               w="100%"
-              h="300px"
+              maxW="100%"
+              h={{ base: "200px", md: "300px" }}
               objectFit="contain"
             />
           </Box>
@@ -120,14 +127,15 @@ const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
             <Box>
               <Heading size="md" mb={3}>
                 Descripción
+                <Divider />
               </Heading>
-              <Text lineHeight="1.8" color="gray.600">
+              <Text lineHeight="1.8" color="gray.600" mx={"2px"} px={4}>
                 {producto.description}
               </Text>
             </Box>
 
             {/* Estadísticas del producto */}
-            <SimpleGrid columns={3} spacing={4}>
+            <SimpleGrid columns={3} spacing={4} mb={"20px"}>
               <Stat>
                 <StatLabel>Calificación</StatLabel>
                 <StatNumber>{producto.rating?.rate || "N/A"}</StatNumber>
