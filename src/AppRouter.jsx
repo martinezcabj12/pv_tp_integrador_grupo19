@@ -9,7 +9,7 @@ import FormularioProducto from "./views/Formulario";
 import Home from "./views/Home";
 import Login from "./views/Login";
 import Register from "./views/Register";
-
+import Contactos from "./views/Contactos";
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/contacto" element={<Contactos />} />
             <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
             <Route path="/favoritos" element={<PrivateRoute><Favoritos /></PrivateRoute>} />
             <Route path="/formulario" element={<PrivateRoute><FormularioProducto /></PrivateRoute>} />
