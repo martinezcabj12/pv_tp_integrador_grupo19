@@ -7,10 +7,6 @@ import {
   Stack,
   Link as ChakraLink,
   Image,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Avatar,
   Text,
   VStack,
@@ -96,7 +92,11 @@ const UserDropdown = ({ user, onLogout, isMobile = false }) => {
         <FaUserAlt
           size={20}
           style={{
-            color: isHovered ? "white" : (user.gender === "female" ? "#DDA0DD" : "#87CEEB"), // Colores pastel
+            color: isHovered
+              ? "white"
+              : user.gender === "female"
+                ? "#DDA0DD"
+                : "#87CEEB", // Colores pastel
           }}
         />
       </Box>
@@ -133,8 +133,8 @@ const UserDropdown = ({ user, onLogout, isMobile = false }) => {
                   <Text fontWeight="semibold" fontSize="sm" color="gray.800">
                     {user.name}
                   </Text>
-                  <Text 
-                    fontSize="xs" 
+                  <Text
+                    fontSize="xs"
                     color="gray.500"
                     isTruncated
                     maxWidth="100%"
@@ -237,9 +237,9 @@ const Navbar = () => {
 
         <HStack
           spacing={4}
-          fontFamily={"Onyra"}
+          fontFamily={"Onyra, arial, sans-serif"}
           display={{ base: "none", md: "flex" }}
-        > 
+        >
           {user &&
             links.map((link) => (
               <NavLink key={link.name} path={link.path} icon={link.icon}>
@@ -249,11 +249,15 @@ const Navbar = () => {
           {user ? (
             <>
               {/* Aquí está el cambio principal - solo el componente UserDropdown */}
-              <UserDropdown user={user} onLogout={handleLogout} isMobile={false} />
+              <UserDropdown
+                user={user}
+                onLogout={handleLogout}
+                isMobile={false}
+              />
             </>
           ) : (
             <>
-              <NavLink path="/login">Login</NavLink>
+              <NavLink path="/login">Iniciar Sesión</NavLink>
               <NavLink path="/register">Registrarse</NavLink>
             </>
           )}
@@ -280,8 +284,17 @@ const Navbar = () => {
             {user ? (
               <>
                 {/* Para móvil también usamos el dropdown */}
-                <Box mx={2} display="flex" alignItems="center" justifyContent="center">
-                  <UserDropdown user={user} onLogout={handleLogout} isMobile={true} />
+                <Box
+                  mx={2}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <UserDropdown
+                    user={user}
+                    onLogout={handleLogout}
+                    isMobile={true}
+                  />
                 </Box>
               </>
             ) : (
@@ -298,3 +311,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
