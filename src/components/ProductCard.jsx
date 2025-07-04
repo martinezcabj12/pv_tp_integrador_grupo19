@@ -11,6 +11,7 @@ import {
   keyframes,
   Box,
 } from "@chakra-ui/react";
+import { EditIcon, ViewIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../redux/products/productsSlice";
 import { useToastManager } from "../hooks/useToastManager";
@@ -268,7 +269,7 @@ const ProductCard = ({ items }) => {
               boxShadow: "md",
             }}
           >
-            ✏ Editar
+            <EditIcon mr={1} /> Editar
           </Button>
           <Button
             onClick={handleVerDetalle}
@@ -282,7 +283,7 @@ const ProductCard = ({ items }) => {
               boxShadow: "md",
             }}
           >
-            👁 Ver más
+            <ViewIcon mr={1} /> Ver más
           </Button>
           <Button
             onClick={() => setIsConfirmOpen(true)}
@@ -297,7 +298,7 @@ const ProductCard = ({ items }) => {
             }}
             isLoading={isDeleting}
           >
-            🗑 Eliminar
+            <DeleteIcon mr={1} /> Eliminar
           </Button>
         </Box>
       </CardFooter>
