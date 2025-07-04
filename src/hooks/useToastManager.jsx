@@ -153,7 +153,7 @@ export const useToastManager = () => {
       title,
       description,
       status: "success",
-      duration: 3000,
+      duration: 4000,
       isClosable: true,
       position: "bottom-right",
     });

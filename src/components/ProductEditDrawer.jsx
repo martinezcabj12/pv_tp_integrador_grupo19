@@ -82,7 +82,6 @@ const ProductEditDrawer = ({
                   name="category"
                   value={editData.category || ""}
                   onChange={handleChange}
-                  placeholder="Seleccionar categoría"
                 >
                   {categorias.map((cat) => (
                     <option key={cat} value={cat}>
