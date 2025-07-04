@@ -50,9 +50,10 @@ const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
             borderRadius="2xl"
             border="1px"
             borderColor={borderColor}
-            p={8}
+            p={4}
             position="relative"
             boxShadow="lg"
+            mx={10}
           >
             <FavButton
               isFavorite={isFavorite}
