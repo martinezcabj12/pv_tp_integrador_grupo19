@@ -1,4 +1,11 @@
-import { SimpleGrid, Box, Avatar, Button, Text, VStack } from "@chakra-ui/react";
+import {
+  SimpleGrid,
+  Box,
+  Avatar,
+  Button,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 
 //recibe un array de contactos por props.
 const ContactosLayout = ({ contactos }) => (
@@ -18,8 +25,10 @@ const ContactosLayout = ({ contactos }) => (
       >
         {/*avatar, nombre y boton*/}
         <VStack spacing={4}>
-          <Avatar size="xl" src={contacto.avatar} name={contacto.nombre} />
-          <Text fontWeight="bold" fontSize="lg">{contacto.nombre}</Text>
+          <Avatar size="xl" src={contacto.imagen} name={contacto.nombre} />
+          <Text fontWeight="bold" fontSize="lg">
+            {contacto.nombre}
+          </Text>
           <Button
             as="a"
             href={contacto.github}
