@@ -68,55 +68,6 @@ En el directorio del proyecto, puedes ejecutar los siguientes comandos:
 * `npm run preview` — Sirve la build de producción localmente para previsualizarla.
 
 ---
-
-### Estructura del Proyecto
-
-```
-pv_tp_integrador_grupo19/
-├── README.md
-├── biome.json
-├── index.html
-├── package.json
-├── vite.config.js
-├── public/
-│   └── font/
-│       └── onyra.otf
-└── src/
-    ├── App.css
-    ├── App.jsx
-    ├── AppRouter.jsx
-    ├── index.css
-    ├── main.jsx
-    ├── app/
-    │   └── store.js
-    ├── assets/
-    ├── components/
-    │   ├── FavButton.jsx
-    │   ├── ProductoDetalle.jsx
-    │   ├── RatingStars.jsx
-    │   ├── Footer/
-    │   │   └── index.jsx
-    │   ├── Header/
-    │   │   └── index.jsx
-    │   └── NavBar/
-    │       └── index.jsx
-    ├── features/
-    │   └── products/
-    │       └── productsSlice.js
-    ├── pages/
-    │   └── Detalle.jsx
-    └── views/
-        ├── Favoritos/
-        │   ├── index.jsx
-        │   └── components/
-        │       └── FavCard.jsx
-        └── Home/
-            ├── index.jsx
-            └── components/
-                └── ProductCard.jsx
-```
-
----
 ## Actualizaciones según Trabajo Práctico Integrador pt.2 - 2025
 
 Este proyecto evoluciona conforme a las consignas del Trabajo Práctico Integrador de Programación Visual 2025.  
